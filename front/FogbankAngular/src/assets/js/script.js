@@ -130,7 +130,7 @@ Version      : 1.0
 		var owl = $('.owl-carousel.mentoring-course');
 	      	owl.owlCarousel({
 	        margin: 25,
-zz	        nav: true,
+	        nav: true,
 	        loop: true,
 	        responsive: {
 	          	0: {
