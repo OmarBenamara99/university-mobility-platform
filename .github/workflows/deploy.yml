@@ -5,30 +5,44 @@ on:
     branches: [ main ]
 
 jobs:
-  build-and-test:
+  validate-structure:
     runs-on: ubuntu-latest
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
       
-    - name: Validate Backend Dockerfile
+    - name: Validate Backend Structure
       run: |
-        echo "🔍 Validating Backend Dockerfile..."
-        if [ -f "backend-Dockerfile" ]; then
+        echo "🔍 Validating Backend Structure..."
+        if [ -f "back/FogbankSpringBootPi/Dockerfile" ]; then
           echo "✅ Backend Dockerfile exists"
         else
           echo "❌ Backend Dockerfile missing!"
           exit 1
         fi
         
-    - name: Validate Frontend Dockerfile
+        if [ -f "back/FogbankSpringBootPi/pom.xml" ]; then
+          echo "✅ Backend pom.xml exists"
+        else
+          echo "❌ Backend pom.xml missing!"
+          exit 1
+        fi
+        
+    - name: Validate Frontend Structure
       run: |
-        echo "🔍 Validating Frontend Dockerfile..."
-        if [ -f "frontend-Dockerfile" ]; then
+        echo "🔍 Validating Frontend Structure..."
+        if [ -f "front/FogbankAngular/Dockerfile" ]; then
           echo "✅ Frontend Dockerfile exists"
         else
           echo "❌ Frontend Dockerfile missing!"
+          exit 1
+        fi
+        
+        if [ -f "front/FogbankAngular/package.json" ]; then
+          echo "✅ Frontend package.json exists"
+        else
+          echo "❌ Frontend package.json missing!"
           exit 1
         fi
         
@@ -43,4 +57,4 @@ jobs:
         fi
         
     - name: Success
-      run: echo "🎉 All validations passed! Ready for deployment."
+      run: echo "🎉 All validations passed! Project structure is perfect for deployment."
