@@ -4,7 +4,8 @@ VOLUME /tmp
 # First copy the source code
 COPY . .
 
-# Build the application
+# Make mvnw executable and build the application
+RUN chmod +x ./mvnw
 RUN ./mvnw clean package -DskipTests
 
 # Then copy the built JAR
