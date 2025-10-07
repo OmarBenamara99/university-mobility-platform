@@ -60,6 +60,7 @@ jobs:
       run: |
         echo "🏗️ Building Backend..."
         cd back/FogbankSpringBootPi
+        chmod +x mvnw
         ./mvnw clean compile -q
         echo "✅ Backend compiled successfully!"
         
