@@ -1,0 +1,46 @@
+name: Deploy University Platform
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Validate Backend Dockerfile
+      run: |
+        echo "🔍 Validating Backend Dockerfile..."
+        if [ -f "backend-Dockerfile" ]; then
+          echo "✅ Backend Dockerfile exists"
+        else
+          echo "❌ Backend Dockerfile missing!"
+          exit 1
+        fi
+        
+    - name: Validate Frontend Dockerfile
+      run: |
+        echo "🔍 Validating Frontend Dockerfile..."
+        if [ -f "frontend-Dockerfile" ]; then
+          echo "✅ Frontend Dockerfile exists"
+        else
+          echo "❌ Frontend Dockerfile missing!"
+          exit 1
+        fi
+        
+    - name: Validate Docker Compose
+      run: |
+        echo "🔍 Validating Docker Compose..."
+        if [ -f "docker-deployment/docker-compose.yml" ]; then
+          echo "✅ Docker Compose file exists"
+        else
+          echo "❌ Docker Compose file missing!"
+          exit 1
+        fi
+        
+    - name: Success
+      run: echo "🎉 All validations passed! Ready for deployment."

@@ -1,0 +1,335 @@
+<app-navbar2></app-navbar2>
+
+
+
+
+
+<app-student-header></app-student-header>
+
+
+
+
+
+
+
+            <!--Dashbord Student -->
+			<div *ngIf="modeFormulaire === 'affichage'" class="page-content">
+				<div class="container">
+					<div class="row">
+						
+						<!-- Profile Details -->
+						<div class="col-xl-12 col-md-12">	
+							<div class="settings-top-widget student-deposit-blk">
+								<div class="row">
+									<div class="col-lg-4 col-md-6">
+										<div class="card stat-info ttl-tickets">
+											<div class="card-body">
+												<div class="view-all-grp d-flex">
+													<div class="student-ticket-view">
+														<h3>50</h3>
+														<p>Purchased Courses</p>
+														<a href="purchase-history.html" >View All</a>
+													</div>
+													<div class="img-deposit-ticket">
+														<img src="assets/img/students/book.svg" alt="">
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4 col-md-6">
+										<div class="card stat-info open-tickets">
+											<div class="card-body">
+												<div class="view-all-grp d-flex">
+													<div class="student-ticket-view">
+														<h3>30</h3>
+														<p>Total Transactions</p>
+														<a href="deposit-student.html" >View All</a>
+													</div>
+													<div class="img-deposit-ticket">
+														<img src="assets/img/students/receipt-text.svg" alt="">
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4 col-md-6">
+										<div class="card stat-info close-tickets">
+											<div class="card-body">
+												<div class="view-all-grp d-flex">
+													<div class="student-ticket-view">
+														<h3>20</h3>
+														<p>Total Deposit</p>
+														<a href="transactions-student.html" >View All</a>
+													</div>
+													<div class="img-deposit-ticket">
+														<img src="assets/img/students/empty-wallet-tick.svg" alt="">
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="settings-widget">
+								<div class="settings-inner-blk p-0">
+									<div class="comman-space pb-0">
+										<div class="filter-grp ticket-grp d-flex align-items-center justify-content-between">
+											<h3>Mes candidatures</h3>
+										</div>
+										<div class="settings-tickets-blk table-responsive">
+
+											<!-- Referred Users-->
+											<table class="table table-nowrap mb-0">
+  <thead>
+    <tr>
+      <th>Titre de l'opportunité</th>
+      <th>Date de dépôt</th>
+      <th>Score</th>
+      <th>Statut</th>
+      <th class="text-end">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  <ng-container *ngFor="let offer of userOffresWithCandidatures">
+    <tr *ngFor="let c of offer.candidatures">
+      <td>{{ offer.titre }}</td>
+      <td>{{ c.dateDepot | date: 'yyyy-MM-dd' }}</td>
+      <td><!-- Score vide pour le moment --></td>
+      <td>
+        <span class="badge"
+          [ngClass]="{
+            'bg-secondary text-white': c.statut === 'EN_ATTENTE',
+            'bg-success text-white': c.statut === 'ACCEPTEE',
+            'bg-danger text-white': c.statut === 'REFUSEE'
+          }"
+          style="font-size: 0.9rem; padding: 5px 10px;">
+          {{ c.statut }}
+        </span>
+      </td>
+      <td class="text-end">
+        <ul class="grp-action-style inline-inline">
+          <li class="list-inline-item">
+            <a href="javascript:void(0);" class="btn btn-action-style btn-action-dark" (click)="editCandidature(c)">
+              <i class="fa-regular fa-pen-to-square"></i>
+            </a>
+          </li>
+          <li class="list-inline-item">
+            <a href="javascript:void(0);" class="btn btn-action-style btn-action-delete" (click)="deleteCandidature(c.id)">
+              <i class="fa-regular fa-trash-can"></i>
+            </a>
+          </li>
+        </ul>
+      </td>
+    </tr>
+  </ng-container>
+</tbody>
+
+</table>
+
+											<!-- /Referred Users-->	
+
+										</div>									
+									</div>
+								</div>
+							</div>
+						</div>	
+						<!-- Profile Details -->
+						
+					</div>
+				</div>
+			</div>	
+			<!-- /Dashbord Student -->
+
+
+
+
+
+
+
+			<div *ngIf="modeFormulaire === 'modification'" class="page-content">
+
+				<div class="container">
+    <div class="row justify-content-center">
+      <div class="col-xl-12 col-md-12">
+        <div class="settings-widget">
+				
+  <div *ngIf="selectedCandidature" class="settings-inner-blk p-0">
+    <div class="comman-space">
+      <div class="filter-grp d-flex align-items-center justify-content-between mb-3">
+        <h3>Modifier une candidature</h3>
+        <div class="go-dashboard text-center">
+          <button class="btn btn-primary" (click)="annuler()">Retour</button>
+        </div>
+      </div>
+
+      <!-- Identité -->
+      <div class="input-block">
+        <label class="form-label">Nom</label>
+        <input type="text" class="form-control" [(ngModel)]="selectedCandidature.nom" name="nom">
+      </div>
+
+      <div class="input-block">
+        <label class="form-label">Prénom</label>
+        <input type="text" class="form-control" [(ngModel)]="selectedCandidature.prenom" name="prenom">
+      </div>
+
+      <div class="input-block">
+        <label class="form-label">ID Esprit</label>
+        <input type="text" class="form-control" [(ngModel)]="selectedCandidature.idEsprit" name="idEsprit">
+      </div>
+
+      <div class="input-block">
+        <label class="form-label">Téléphone</label>
+        <input type="text" class="form-control" [(ngModel)]="selectedCandidature.phone" name="phone">
+      </div>
+
+      <div class="input-block">
+        <label class="form-label">Email principal</label>
+        <input type="email" class="form-control" [(ngModel)]="selectedCandidature.email" name="email">
+      </div>
+
+      <div class="input-block">
+        <label class="form-label">Email Esprit</label>
+        <input type="email" class="form-control" [(ngModel)]="selectedCandidature.emailesprit" name="emailesprit">
+      </div>
+
+      <div class="input-block">
+        <label class="form-label">Email personnel</label>
+        <input type="email" class="form-control" [(ngModel)]="selectedCandidature.emailpersonel" name="emailpersonel">
+      </div>
+
+      <!-- Fichiers -->
+      <div class="input-block">
+        <label class="form-label">Lien CV</label>
+        <input type="text" class="form-control" [(ngModel)]="selectedCandidature.CV" name="CV">
+      </div>
+
+      <div class="input-block">
+        <label class="form-label">Lien Lettre de motivation</label>
+        <input type="text" class="form-control" [(ngModel)]="selectedCandidature.lettreMotivation" name="lettreMotivation">
+      </div>
+
+      <div class="input-block">
+        <label class="form-label">Lien autres documents (certificats, diplômes...)</label>
+        <input type="text" class="form-control" [(ngModel)]="selectedCandidature.autreDocs" name="autreDocs">
+      </div>
+
+      <!-- Études -->
+      <div class="input-block">
+        <label class="form-label">Année actuelle</label>
+        <select class="form-select" [(ngModel)]="selectedCandidature.anneeActuelle" name="anneeActuelle">
+          <option *ngFor="let a of anneeEtudeValues" [value]="a">{{ a }}</option>
+        </select>
+      </div>
+
+      <div class="input-block">
+        <label class="form-label">Option actuelle</label>
+        <select class="form-select" [(ngModel)]="selectedCandidature.optionActuelle" name="optionActuelle">
+          <option *ngFor="let o of optionEtudeValues" [value]="o">{{ o }}</option>
+        </select>
+      </div>
+
+      <div class="input-block">
+        <label class="form-label">Niveau de langue</label>
+        <select class="form-select" [(ngModel)]="selectedCandidature.niveauLangue" name="niveauLangue">
+          <option *ngFor="let n of langueStatusValues" [value]="n">{{ n }}</option>
+        </select>
+      </div>
+
+      <div class="input-block">
+        <label class="form-label">Crédits non validés</label>
+        <div class="form-check form-switch check-on d-flex align-items-center gap-2">
+          <input type="checkbox" class="form-check-input" [(ngModel)]="selectedCandidature.creditsNonValides" name="creditsNonValides" id="creditSwitch">
+          <label class="form-check-label" for="creditSwitch" style="margin-left: 10px;">
+            {{ selectedCandidature.creditsNonValides ? 'Oui' : 'Non' }}
+          </label>
+        </div>
+      </div>
+
+      <!-- Moyennes -->
+      <div class="row">
+  <div class="col-md-4">
+    <div class="input-block">
+      <label class="form-label">Moyenne 1ère année</label>
+      <input type="number" class="form-control" [(ngModel)]="selectedCandidature.moyenne1A">
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="input-block">
+      <label class="form-label">Moyenne 2ème année</label>
+      <input type="number" class="form-control" [(ngModel)]="selectedCandidature.moyenne2A">
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="input-block">
+      <label class="form-label">Moyenne 3ème année</label>
+      <input type="number" class="form-control" [(ngModel)]="selectedCandidature.moyenne3A">
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="input-block">
+      <label class="form-label">Moyenne 4ème année</label>
+      <input type="number" class="form-control" [(ngModel)]="selectedCandidature.moyenne4A">
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="input-block">
+      <label class="form-label">Moyenne 5ème année</label>
+      <input type="number" class="form-control" [(ngModel)]="selectedCandidature.moyenne5A">
+    </div>
+  </div>
+</div>
+
+
+      
+
+      <div class="submit-ticket">
+        <button class="btn btn-primary" (click)="updateCandidature()">Mettre à jour</button>
+        <button class="btn btn-dark" (click)="annuler()">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+  </div>
+</div>
+
+
+
+
+
+
+			
+
+
+
+
+
+
+
+
+
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <app-footer></app-footer>

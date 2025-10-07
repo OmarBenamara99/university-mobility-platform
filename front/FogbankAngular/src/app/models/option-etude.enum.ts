@@ -1,0 +1,9 @@
+export enum OptionEtude {
+  CLOUD = 'CLOUD',
+  DATA_SCIENCE = 'DATA_SCIENCE',
+  DEV_LOGICIEL = 'DEV_LOGICIEL',
+  SECURITE = 'SECURITE',
+  RESEAUX = 'RESEAUX',
+  BI = 'BI',
+  AUTRE = 'AUTRE'
+}

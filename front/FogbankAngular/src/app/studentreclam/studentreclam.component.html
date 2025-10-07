@@ -1,0 +1,140 @@
+<app-navbar2></app-navbar2>
+<app-student-header></app-student-header>
+
+<!-- Reclamation Form -->
+<div class="page-content">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        
+        <!-- Header -->
+        <div class="title-sec mb-4">
+          <div class="row">
+            <div class="col-sm-12">
+              <h2>Faire une Réclamation</h2>
+              <p>Ici vous pouvez soumettre une réclamation concernant votre expérience de mobilité.</p>
+            </div>	
+          </div>	
+        </div>
+
+        <!-- Message Alert -->
+        <div *ngIf="message" class="alert" [class.alert-success]="messageType === 'success'" [class.alert-danger]="messageType === 'error'">
+          {{ message }}
+        </div>
+
+        <!-- Reclamation Form -->
+        <div class="support-wrap">
+          <form (ngSubmit)="onSubmit()">
+            <div class="input-block">
+              <label>Sujet *</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                placeholder="Entrez le sujet de votre réclamation"
+                [(ngModel)]="newReclamation.subject"
+                name="subject"
+                required>
+            </div>
+            <div class="input-block">
+              <label>Description *</label>
+              <textarea 
+                class="form-control" 
+                placeholder="Décrivez votre problème en détail..." 
+                rows="4"
+                [(ngModel)]="newReclamation.description"
+                name="description"
+                required></textarea>
+            </div>
+            <button 
+              type="submit" 
+              class="btn btn-submit"
+              [disabled]="isLoading">
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+              {{ isLoading ? 'Soumission...' : 'Soumettre la Réclamation' }}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Reclamation Form -->
+
+<!-- Responses Section -->
+<section class="course-content">
+  <div class="container">
+    
+    <!-- Header -->
+    <div class="title-sec">
+      <div class="row">
+        <div class="col-sm-6 col-lg-5">
+          <h2>Réponses aux Réclamations</h2>
+          <p>Ici vous trouverez les réponses de l'administration à vos réclamations.</p>
+        </div>	
+        <div class="col-sm-6 col-lg-7">
+          <div class="text-end">
+            <!-- Removed "Mark All as Read" button as requested -->
+          </div>
+        </div>	
+      </div>	
+    </div>
+
+    <!-- Reclamations List -->					
+    <div class="notify-sec">
+      <div class="row">
+        <div class="col-md-12">
+          
+          <!-- No Reclamations Message -->
+          <div *ngIf="reclamations.length === 0" class="alert alert-info">
+            Vous n'avez aucune réclamation pour le moment.
+          </div>
+
+          <!-- Reclamations Loop -->
+          <div *ngFor="let reclamation of reclamations" class="notify-item">
+            <div class="row align-items-center">
+              <div class="col-md-9">
+                <div class="notify-content">
+                  <a href="javascript:void(0);">
+                  </a>
+                  <div class="notify-detail">
+                    <h6>
+                      <a href="javascript:void(0);">{{ reclamation.subject }}</a>
+                      <span class="ms-3 text-muted small">{{ reclamation.submissionDate | date:'dd/MM/yyyy à HH:mm' }}</span>
+                    </h6>
+                    <p>{{ reclamation.description }}</p>
+                    
+                    <!-- Admin Response -->
+                    <div *ngIf="reclamation.resolved" class="admin-response mt-2 p-2 bg-light rounded">
+                      <strong>Réponse de l'administration:</strong><br>
+                      {{ reclamation.adminResponse }}
+                      <div class="text-muted small mt-1">
+                        Répondu le {{ reclamation.responseDate | date:'dd/MM/yyyy à HH:mm' }}
+                      </div>
+                    </div>
+                    
+                    <div *ngIf="!reclamation.resolved" class="text-muted small mt-2">
+                      <strong>Statut:</strong> En attente de réponse de l'administration
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="text-md-end">
+                  <span class="badge" [class.badge-success]="reclamation.resolved" [class.badge-warning]="!reclamation.resolved">
+                    {{ getStatusText(reclamation) }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>						
+    </div>
+    <!-- /Reclamations List -->
+
+  </div>
+</section>
+<!-- /Responses Section -->
+
+<app-footer></app-footer>

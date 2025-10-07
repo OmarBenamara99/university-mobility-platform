@@ -1,0 +1,137 @@
+<app-navbar2></app-navbar2>
+<app-student-header></app-student-header>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-xl-10 col-lg-12">
+      
+      <!-- Main Card -->
+      <div class="settings-widget profile-details">
+        <div class="settings-menu p-0">
+          
+          <!-- Header -->
+          <div class="profile-heading text-center">
+            <h3>Choix des Examens de Mobilité</h3>
+            <p class="mx-auto" style="max-width: 600px;">
+              Choisissez où vous souhaitez passer vos examens pour votre programme de mobilité
+            </p>
+          </div>
+          
+          <!-- Loading State -->
+          <div *ngIf="loading" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Chargement...</span>
+            </div>
+          </div>
+
+          <!-- Content when loaded -->
+          <div *ngIf="!loading">
+            
+            <!-- Step 1: Select Offer -->
+            <div class="address-check-widget comman-space">
+              <h4 class="text-center mb-4">1. Sélectionnez votre programme de mobilité</h4>
+              <div class="check-bill-address">
+                <div *ngFor="let offer of acceptedOffers" 
+                     class="edit-new-address wallet-method wallet-radio-blk mb-3">
+                  <label class="radio-inline custom_radio">
+                    <input type="radio" name="offer_choice" 
+                          [value]="offer.id" 
+                          [(ngModel)]="selectedOfferId"
+                          (change)="onOfferSelect()">
+                    <span class="checkmark"></span> 
+                    <strong>{{offer.titre}}</strong> - {{offer.universite}}
+                    <br>
+                    <span class="ms-3 text-muted">
+  {{offer.dateDebut | date:'dd/MM/yyyy'}} - {{offer.dateFin | date:'dd/MM/yyyy'}}
+</span>
+                  </label>
+                </div>
+                
+                <div *ngIf="acceptedOffers.length === 0" class="alert alert-info text-center">
+                  Vous n'avez aucun programme de mobilité accepté pour le moment.
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2: Show Documents if offer selected -->
+            <div *ngIf="selectedOfferId" class="comman-space">
+              <h4 class="text-center mb-4">2. Consultez le document d'équivalence</h4>
+              
+              <div *ngIf="documents.length > 0" class="alert alert-info">
+                <p><strong>Document disponible:</strong></p>
+                <div *ngFor="let doc of documents" class="d-flex justify-content-between align-items-center mt-2">
+                  <div>
+                    <i class="fas fa-file-pdf text-danger me-2"></i>
+                    {{doc.originalFileName}}
+                  </div>
+                  <button class="btn btn-sm btn-outline-primary" (click)="downloadDocument(doc)">
+                    <i class="fas fa-download"></i> Télécharger
+                  </button>
+                </div>
+              </div>
+              
+              <div *ngIf="documents.length === 0" class="alert alert-warning text-center">
+                Aucun document d'équivalence disponible pour cette offre pour le moment.
+              </div>
+            </div>
+
+            <!-- Step 3: Exam Choice Selection -->
+            <div *ngIf="selectedOfferId" class="address-check-widget comman-space">
+              <h4 class="text-center mb-4">3. Choisissez où passer vos examens</h4>
+              <div class="check-bill-address">
+                <div class="edit-new-address wallet-method wallet-radio-blk mb-3">
+                  <label class="radio-inline custom_radio">
+                    <input type="radio" name="exam_choice" 
+                          [value]="ChoiceType.ESPRIT" 
+                          [(ngModel)]="examChoice">
+                    <span class="checkmark"></span> 
+                    {{getChoiceText(ChoiceType.ESPRIT)}}
+                  </label>
+                </div>
+                
+                <div class="edit-new-address wallet-method wallet-radio-blk mb-3">
+                  <label class="radio-inline custom_radio">
+                    <input type="radio" name="exam_choice" 
+                          [value]="ChoiceType.PARTNER_UNIVERSITY" 
+                          [(ngModel)]="examChoice">
+                    <span class="checkmark"></span> 
+                    {{getChoiceText(ChoiceType.PARTNER_UNIVERSITY)}}
+                  </label>
+                </div>
+                
+                <div class="edit-new-address wallet-method wallet-radio-blk mb-3">
+                  <label class="radio-inline custom_radio">
+                    <input type="radio" name="exam_choice" 
+                          [value]="ChoiceType.COMBINATION" 
+                          [(ngModel)]="examChoice">
+                    <span class="checkmark"></span> 
+                    {{getChoiceText(ChoiceType.COMBINATION)}}
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div *ngIf="selectedOfferId" class="add-new-address grad-border hvr-sweep-to-right mt-4 text-center">
+              <button class="btn btn-primary px-5" 
+                      (click)="onSubmit()"
+                      [disabled]="loading || submitted">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+                {{ submitted ? 'Choix Enregistré' : 'Confirmer mon Choix' }}
+              </button>
+            </div>
+
+            <!-- Success Message -->
+            <div *ngIf="submitted" class="alert alert-success mt-3 text-center">
+              <i class="fas fa-check-circle"></i>
+              Votre choix a été enregistré avec succès!
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

@@ -1,0 +1,125 @@
+<app-navbar2></app-navbar2>
+<app-student-header></app-student-header>
+
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+      
+      <!-- Main Card -->
+      <div class="card shadow-lg border-0">
+        
+        <!-- Card Header -->
+        <div class="card-header bg-primary text-white text-center py-4">
+          <div class="d-flex align-items-center justify-content-center">
+            <i class="fas fa-file-contract fa-3x me-3"></i>
+            <div>
+              <h2 class="mb-1">Ordre de Mission</h2>
+              <p class="mb-0">Document officiel de votre mobilité</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-body p-5">
+          
+          <!-- Loading State -->
+          <div *ngIf="loading" class="text-center py-5">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+              <span class="visually-hidden">Chargement...</span>
+            </div>
+            <p class="mt-3 text-muted">Chargement de votre Ordre de Mission...</p>
+          </div>
+
+          <!-- Error State -->
+          <div *ngIf="error && !loading" class="text-center py-4">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <i class="fas fa-exclamation-triangle me-2"></i>
+              {{ error }}
+              <button type="button" class="btn-close" (click)="error = null"></button>
+            </div>
+            <button class="btn btn-outline-primary mt-2" (click)="refresh()">
+              <i class="fas fa-refresh me-2"></i>Réessayer
+            </button>
+          </div>
+
+          <!-- Success State -->
+          <div *ngIf="ordreMission && !loading" class="text-center">
+            
+            <!-- Offer Information -->
+            <div class="mb-4 p-4 bg-light rounded-3">
+              <h4 class="text-primary mb-2">{{ userOffer?.titre }}</h4>
+              <p class="mb-1"><strong>Université:</strong> {{ userOffer?.universite }}</p>
+              <p class="mb-0"><strong>Type:</strong> {{ userOffer?.type }}</p>
+            </div>
+
+            <!-- Document Information -->
+            <div class="mb-4">
+              <div class="document-card p-4 border rounded-3">
+                <i class="fas fa-file-pdf fa-4x text-danger mb-3"></i>
+                <h5 class="mb-2">Votre Ordre de Mission est prêt</h5>
+                <p class="text-muted mb-3">
+                  <i class="fas fa-info-circle me-1"></i>
+                  Document téléchargé le: {{ ordreMission.uploadedAt | date:'dd/MM/yyyy à HH:mm' }}
+                </p>
+                <p class="mb-3">
+                  <strong>Nom du fichier:</strong><br>
+                  <span class="text-truncate">{{ ordreMission.originalFileName }}</span>
+                </p>
+              </div>
+            </div>
+
+            <!-- Download Button -->
+            <div class="mb-4">
+              <button 
+                class="btn btn-primary btn-lg px-5 py-3"
+                (click)="downloadOrdreMission()"
+                [disabled]="downloadInProgress"
+              >
+                <span *ngIf="downloadInProgress">
+                  <i class="fas fa-spinner fa-spin me-2"></i>Téléchargement...
+                </span>
+                <span *ngIf="!downloadInProgress">
+                  <i class="fas fa-download me-2"></i>Télécharger l'Ordre de Mission
+                </span>
+              </button>
+            </div>
+
+            <!-- Instructions -->
+            <div class="alert alert-info text-start">
+              <h6 class="alert-heading"><i class="fas fa-lightbulb me-2"></i>Instructions:</h6>
+              <ul class="mb-0 ps-3">
+                <li>Conservez ce document en lieu sûr</li>
+                <li>Imprimez-le pour vos démarches administratives</li>
+                <li>Présentez-le aux autorités si nécessaire</li>
+              </ul>
+            </div>
+
+          </div>
+
+          <!-- No Document Available -->
+          <div *ngIf="!ordreMission && !loading && !error" class="text-center py-4">
+            <i class="fas fa-file-search fa-4x text-muted mb-3"></i>
+            <h4 class="text-muted">Aucun Ordre de Mission disponible</h4>
+            <p class="text-muted">
+              Votre Ordre de Mission n'a pas encore été généré pour cette offre.
+              Veuillez contacter l'administration.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Card Footer -->
+        <div class="card-footer bg-light text-center py-3">
+          <small class="text-muted">
+            <i class="fas fa-shield-alt me-1"></i>
+            Document sécurisé - Université Esprit
+          </small>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

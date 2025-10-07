@@ -1,0 +1,113 @@
+<app-navbar2></app-navbar2>
+<app-student-header></app-student-header>
+
+<!-- Extension Request Form -->
+<div class="page-content">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        
+        <!-- Header -->
+        <div class="title-sec mb-4">
+          <div class="row">
+            <div class="col-sm-12">
+              <h2>Demande d'Extension de Mobilité</h2>
+              <p>Remplissez ce formulaire pour soumettre une demande d'extension de votre période de mobilité.</p>
+            </div>	
+          </div>	
+        </div>
+
+        <!-- Message Alert -->
+        <div *ngIf="message" class="alert" [class.alert-success]="messageType === 'success'" [class.alert-danger]="messageType === 'error'">
+          {{ message }}
+        </div>
+
+        <!-- Extension Request Form -->
+        <div class="support-wrap">
+          <form (ngSubmit)="onSubmit()">
+            <div class="input-block">
+              <label>Titre de la Demande *</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                placeholder="Ex: Demande d'extension pour stage supplémentaire"
+                [(ngModel)]="extensionRequest.title"
+                name="title"
+                required>
+            </div>
+            
+            <div class="input-block">
+              <label>Description Détaillée *</label>
+              <textarea 
+                class="form-control" 
+                placeholder="Décrivez les raisons de votre demande d'extension, votre motivation, et les détails de votre situation..." 
+                rows="6"
+                [(ngModel)]="extensionRequest.description"
+                name="description"
+                required></textarea>
+            </div>
+
+            <!-- File Upload Section -->
+            <div class="input-block">
+              <label class="add-course-label">Document Justificatif (Optionnel)</label>
+              
+              <div class="file-drop" 
+                  (drop)="onDrop($event)" 
+                  (dragover)="onDragOver($event)" 
+                  (dragleave)="onDragLeave($event)" 
+                  [class.dragover]="isDragOver"
+                  style="border: 2px dashed #ccc; padding: 20px; text-align: center; border-radius: 8px; cursor: pointer;">
+                <form class="dropzone" (click)="fileInput.click()">
+                  <p>
+                    <i class="fas fa-cloud-upload-alt fa-2x text-muted mb-2"></i><br>
+                    Glissez-déposez votre document ici<br>
+                    ou <strong>cliquez pour sélectionner</strong>
+                  </p>
+                  <input 
+                    type="file" 
+                    #fileInput 
+                    (change)="onFileSelected($event)" 
+                    accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" 
+                    hidden
+                  />
+                </form>
+              </div>
+
+              <div class="accept-drag-file mt-2">
+                <p class="text-muted small">
+                  <i class="fas fa-info-circle me-1"></i>
+                  Formats acceptés: PDF, Word, Images (max 5MB)
+                </p>
+              </div>
+
+              <!-- Selected file info -->
+              <div *ngIf="selectedFile" class="selected-file-info mt-3 p-3 bg-light rounded">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>
+                    <i class="fas fa-file text-primary me-2"></i>
+                    {{ selectedFile.name }}
+                    <small class="text-muted">({{ selectedFile.size / (1024 * 1024) | number:'1.1-1' }} MB)</small>
+                  </span>
+                  <button class="btn btn-sm btn-outline-danger" (click)="removeFile()">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <button 
+              type="submit" 
+              class="btn btn-primary btn-lg w-100 mt-4"
+              [disabled]="isLoading">
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+              {{ isLoading ? 'Soumission en cours...' : 'Soumettre la Demande' }}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Extension Request Form -->
+
+<app-footer></app-footer>

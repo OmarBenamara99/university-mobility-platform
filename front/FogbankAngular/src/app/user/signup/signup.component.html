@@ -1,0 +1,110 @@
+<!-- Conteneur Principal -->
+<div class="main-wrapper log-wrap">
+
+  <div class="row">
+
+    <!-- Bannière de Connexion -->
+    <div class="col-md-6 login-bg">
+      <div class="owl-carousel login-slide owl-theme">
+        <div class="welcome-login">
+          <div class="login-banner">
+            <img src="assets/img/login-img.png" class="img-fluid" alt="Logo">
+          </div>
+          <div class="mentor-course text-center">
+            <h2>Bienvenue sur <br>les Cours DreamsLMS.</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+          </div>
+        </div>
+        <div class="welcome-login">
+          <div class="login-banner">
+            <img src="assets/img/login-img.png" class="img-fluid" alt="Logo">
+          </div>
+          <div class="mentor-course text-center">
+            <h2>Bienvenue sur <br>les Cours DreamsLMS.</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+          </div>
+        </div>
+        <div class="welcome-login">
+          <div class="login-banner">
+            <img src="assets/img/login-img.png" class="img-fluid" alt="Logo">
+          </div>
+          <div class="mentor-course text-center">
+            <h2>Bienvenue sur <br>les Cours DreamsLMS.</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /Bannière de Connexion -->
+
+    <div class="col-md-6 login-wrap-bg">
+
+      <!-- Inscription -->
+      <div class="login-wrapper">
+        <div class="loginbox">
+          <div class="img-logo">
+            <img src="../../../assets/img/logoo.png" class="img-fluid" alt="Logo">
+            <div class="back-home">
+              <a href="index.html">Retour à l'accueil</a>
+            </div>
+          </div>
+          <h1>S'inscrire</h1>
+
+          <form (ngSubmit)="signup()">
+            <div class="input-block">
+              <label class="form-control-label">Prénom</label>
+              <input type="text" class="form-control" placeholder="Entrez votre prénom" name="firstname" [(ngModel)]="signUpRequest.firstname">
+            </div>
+            <div class="input-block">
+              <label class="form-control-label">Nom</label>
+              <input type="text" class="form-control" placeholder="Entrez votre nom" name="lastname" [(ngModel)]="signUpRequest.lastname">
+            </div>
+            <div class="input-block">
+              <label class="form-control-label">Email</label>
+              <input type="email" class="form-control" placeholder="Entrez votre adresse email" name="email" [(ngModel)]="signUpRequest.email">
+            </div>
+            <div class="input-block">
+              <label class="form-control-label">Mot de passe</label>
+              <div class="pass-group" id="passwordInput">
+                <input type="password" class="form-control pass-input" placeholder="Entrez votre mot de passe" name="password" [(ngModel)]="signUpRequest.password">
+                <span class="toggle-password feather-eye"></span>
+                <span class="pass-checked"><i class="feather-check"></i></span>
+              </div>
+              <div class="password-strength" id="passwordStrength">
+                <span id="poor"></span>
+                <span id="weak"></span>
+                <span id="strong"></span>
+                <span id="heavy"></span>
+              </div>
+              <div id="passwordInfo"></div>
+            </div>
+
+            <div class="form-check remember-me">
+              <label class="form-check-label mb-0">
+                <input class="form-check-input" type="checkbox" name="remember" [(ngModel)]="signUpRequest.rememberMe"> J'accepte les <a [routerLink]="['/termsconditions']">Conditions d'utilisation</a> et la <a href="/privacypolicy">Politique de confidentialité.</a>
+              </label>
+            </div>
+            <div class="d-grid">
+              <button class="btn btn-primary btn-start" type="submit">Créer un compte</button>
+            </div>
+          </form>
+
+        </div>
+        <div class="google-bg text-center">
+          <span><a href="#">Ou connectez-vous avec</a></span>
+          <div class="sign-google">
+            <ul>
+              <li><a href="#"><img src="assets/img/net-icon-01.png" class="img-fluid" alt="Logo"> Se connecter avec Google</a></li>
+              <li><a href="#"><img src="assets/img/net-icon-02.png" class="img-fluid" alt="Logo"> Se connecter avec Facebook</a></li>
+            </ul>
+          </div>
+          <p class="mb-0">Vous avez déjà un compte ? <a href="login.html">Se connecter</a></p>
+        </div>
+      </div>
+      <!-- /Inscription -->
+
+    </div>
+
+  </div>
+
+</div>

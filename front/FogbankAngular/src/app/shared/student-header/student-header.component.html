@@ -1,0 +1,35 @@
+<!-- Student Header -->
+			<div class="course-student-header">
+				<div class="container">
+					<div class="student-group">
+						<div class="course-group ">
+							<div class="course-group-img d-flex">
+								<a href="student-profile.html"><img [src]="userPhotoUrl || 'assets/img/instructor/profile-avatar.jpg'" alt="" class="img-fluid"></a>
+								<div class="d-flex align-items-center">
+									<div class="course-name">
+										<h4><a href="student-profile.html">{{ currentUser.firstname }} {{ currentUser.lastname }}</a></h4>
+										<p>Student</p>
+									</div>
+								</div>
+							</div>
+							<div class="course-share ">
+								<a [routerLink]="['/admin/edit']" class="btn btn-primary me-3">Modifier le Profil</a>
+                                <a href="javascript:void(0);" class="btn btn-primary me-3">Supprimer le Compte</a>
+                                <a (click)="logOut()" class="btn btn-primary">Se Déconnecter</a>
+							</div>
+						</div>
+					</div>
+					<div class="my-student-list">
+						<ul>
+							<li><a href="#">Dashboard</a></li>
+							<li><a  href="#">Courses</a></li>
+							<li><a href="#">Wishlists</a></li>
+							<li><a href="#">Messages</a></li>
+							<li ><a href="#">Purchase history</a></li>
+							<li ><a href="#">Deposit</a></li>
+							<li class="mb-0"><a href="#">Transactions</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- /Student Header -->

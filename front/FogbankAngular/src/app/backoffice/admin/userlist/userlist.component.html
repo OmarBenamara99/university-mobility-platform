@@ -1,0 +1,113 @@
+<!-- Main Wrapper -->
+<div class="main-wrapper">
+
+  <!-- Header -->
+  <app-navbar3></app-navbar3>
+  <!-- /Header -->
+
+  <!-- Page Wrapper -->
+  <div class="page-content">
+    <div class="container">
+      <div class="row">
+
+        <!-- Sidebar -->
+        <div class="col-xl-3 col-lg-4 col-md-12 theiaStickySidebar">
+          <app-sidebar2></app-sidebar2>
+        </div>
+        <!-- /Sidebar -->
+
+        <!-- Tableau de bord Formateur -->
+<div class="col-xl-9 col-lg-8 col-md-12">
+  <div class="tak-instruct-group">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="settings-widget">
+          <div class="settings-inner-blk p-0">
+            <div class="sell-course-head student-meet-head comman-space border-0">
+              <div class="tak-head d-flex align-items-center">
+                <div>
+                  <h3>Utilisateurs</h3>
+                  <p>Rencontrez les personnes qui utilisent la plateforme.</p>
+                </div>
+                <div class="view-icons">
+                  <a [routerLink]="['/admin/usersgrid']" class="grid-view active"><i class="feather-grid"></i></a>
+                  <a [routerLink]="['/admin/users']" class="list-view"><i class="feather-list"></i></a>
+                </div>
+              </div>
+              <form>
+                <div class="student-search-form d-flex ">
+                  <div class="input-block mb-0">
+                    <input type="text" class="form-control" placeholder="Rechercher" [(ngModel)]="searchTerm" name="searchTerm" (input)="searchUsers()">
+                  </div>
+                  <div class="export-cvv-btn">
+                    <button class="btn btn-primary" (click)="exportToCsv()">Exporter en CSV</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-widget">
+          <div class="settings-inner-blk p-0">
+            <div class="comman-space pb-0">
+              <div class="settings-referral-blk table-responsive">
+                <!-- Liste des Utilisateurs -->
+                <table class="table table-nowrap">
+                  <thead>
+                    <tr>
+                      <th>Prénom</th>
+                      <th>Nom</th>
+                      <th>Email</th>
+                      <th>Rôle</th>
+                      <th>Actions</th> <!-- Colonne pour les actions -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let user of listUsers">
+                      <td>
+                        <img [src]="user.id ? getUserPhoto(user.id) : 'assets/img/instructor/profile-avatar.jpg'" 
+                             class="rounded-circle me-2" alt="Photo de l'utilisateur" 
+                             style="width: 50px; height: 50px;">
+                        {{ user.firstname }}
+                      </td>
+                      <td>{{ user.lastname }}</td>
+                      <td>{{ user.email }}</td>
+                      <td>{{ user.role }}</td>
+                      <td>
+                        <div class="btn-group" role="group">
+                          <!-- Bouton Modifier -->
+                          <a style="margin-right: 10px; font-size: 20px;" href="#" role="button">
+                            <i class="feather feather-edit"></i>
+                          </a>
+                          <!-- Bouton Supprimer -->
+                          <a style="font-size: 20px;" href="#" role="button" (click)="deleteUser(user)">
+                            <i class="feather feather-trash-2"></i>
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <!-- /Liste des Utilisateurs -->
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Tableau de bord Formateur -->
+
+      </div>
+    </div>
+  </div>
+  <!-- /Page Wrapper -->
+
+  <!-- Footer -->
+  <app-footer></app-footer>
+  <!-- /Footer -->
+</div>
+<!-- /Main Wrapper -->

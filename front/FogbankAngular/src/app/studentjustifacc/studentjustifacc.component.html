@@ -1,0 +1,132 @@
+<app-navbar2></app-navbar2>
+<app-student-header></app-student-header>
+
+<!-- Centered Justificatif d'acceptation -->
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-xl-8 col-lg-10">
+      <div class="settings-widget profile-details">
+        <div class="settings-menu p-0">
+          <div class="profile-heading text-center">
+            <h3>Justificatif d'acceptation</h3>
+            <p class="mx-auto" style="max-width: 600px;">
+              Téléchargez votre lettre d'acceptation ou preuve d'inscription fournie par l'université partenaire.
+            </p>
+          </div>
+          
+          <!-- Loading State -->
+          <div *ngIf="loading" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Chargement...</span>
+            </div>
+          </div>
+
+          <!-- Content when loaded -->
+          <div *ngIf="!loading && acceptanceProof">
+            
+            <!-- Upload du justificatif d'acceptation -->
+            <div class="input-block comman-space">
+              <label class="add-course-label">Lettre d'acceptation / Preuve d'inscription</label>
+              
+              <div class="file-drop" 
+                  (drop)="onDrop($event)" 
+                  (dragover)="onDragOver($event)" 
+                  (dragleave)="onDragLeave($event)" 
+                  [class.dragover]="isDragOver">
+                <form class="dropzone" (click)="documentInput.click()">
+                  <p>Glissez-déposez votre document ici ou cliquez pour parcourir</p>
+                  <input 
+                    type="file" 
+                    #documentInput 
+                    (change)="onFileSelected($event)" 
+                    accept=".pdf,.jpg,.jpeg,.png" 
+                    hidden
+                  />
+                </form>
+              </div>
+
+              <div class="accept-drag-file">
+                <p>Formats acceptés: PDF, JPG, JPEG, PNG</p>
+              </div>
+
+              <div *ngIf="documentFile" class="preview-file mt-3">
+                <span class="file-name">{{ documentFile.name }}</span>
+                <button class="btn btn-sm btn-outline-danger ms-2" (click)="removeFile()">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Instructions -->
+            <div class="alert alert-info mt-3">
+              <h6>Documents acceptés :</h6>
+              <ul class="mb-0">
+                <li>Lettre d'acceptation officielle</li>
+                <li>Preuve d'inscription</li>
+                <li>Certificat d'admission</li>
+                <li>Email de confirmation</li>
+              </ul>
+            </div>
+
+            <!-- Bouton de soumission -->
+            <div class="add-new-address grad-border hvr-sweep-to-right mt-4 text-center">
+              <button class="btn btn-primary px-5" 
+                      (click)="onSubmit()"
+                      [disabled]="!documentFile || submitting">
+                {{ submitting ? 'Traitement...' : 'Soumettre le document' }}
+              </button>
+            </div>
+
+            <!-- Status Messages -->
+            <div *ngIf="successMessage" class="alert alert-success mt-3">
+              {{ successMessage }}
+            </div>
+            <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+              {{ errorMessage }}
+            </div>
+
+            <!-- Current Status Display -->
+            <div class="status-display mt-4 p-3 border rounded">
+              <h5>Statut actuel:</h5>
+              <span class="badge" 
+                  [ngClass]="{
+                    'bg-warning': acceptanceProof.status === proofStatus.PENDING_UPLOAD,
+                    'bg-primary': acceptanceProof.status === proofStatus.UNDER_REVIEW,
+                    'bg-success': acceptanceProof.status === proofStatus.APPROVED,
+                    'bg-danger': acceptanceProof.status === proofStatus.REJECTED,
+                    'bg-secondary': acceptanceProof.status === proofStatus.CANCELLED
+                  }">
+                {{ getStatusText(acceptanceProof.status) }}
+              </span>
+              <p class="mt-2 small text-muted">
+                Dernière mise à jour: {{ acceptanceProof.lastUpdated | date:'medium' }}
+              </p>
+              
+              <!-- Additional info for rejected status -->
+              <div *ngIf="acceptanceProof.status === proofStatus.REJECTED" class="mt-2">
+                <p class="text-danger mb-1"><strong>Document rejeté</strong></p>
+                <p class="small mb-0">Veuillez télécharger un nouveau document valide.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- No acceptance proof found or not ready -->
+          <div *ngIf="!loading && !acceptanceProof" class="text-center py-4">
+            <div class="alert alert-info">
+              <p *ngIf="!hasCompletedAdministrative">Veuillez d'abord compléter la régularisation administrative.</p>
+              <p *ngIf="hasCompletedAdministrative">Votre justificatif d'acceptation sera disponible après validation de votre dossier administratif.</p>
+            </div>
+          </div>
+
+          <!-- Completed and approved -->
+          <div *ngIf="!loading && acceptanceProof?.status === proofStatus.APPROVED" class="alert alert-success mt-3">
+            <i class="fas fa-check-circle me-2"></i>
+            Votre justificatif d'acceptation a été approuvé ! Votre dossier est complet.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

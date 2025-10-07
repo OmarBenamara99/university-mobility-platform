@@ -1,0 +1,170 @@
+<!-- Main Wrapper -->
+<div class="main-wrapper">
+
+  <!-- Header -->
+  <app-navbar3></app-navbar3>
+  <!-- /Header -->
+
+  <!-- Page Wrapper -->
+  <div class="page-content">
+    <div class="container">
+      <div class="row">
+
+        <!-- Sidebar -->
+        <div class="col-xl-3 col-lg-4 col-md-12 theiaStickySidebar">
+          <app-sidebar2></app-sidebar2>
+        </div>
+        <!-- /Sidebar -->
+
+        <!-- Content -->
+        <div class="col-xl-9 col-lg-8 col-md-12">
+          
+          <!-- Page Header - Fixed -->
+          <!-- Page Header - Fixed -->
+<div class="page-header">
+  <div class="row align-items-center">
+    <div class="col-md-12">
+      <h2 class="page-title mb-3 fw-bold">Tableau de Bord des Feedbacks</h2>
+      <!-- Remove the entire breadcrumb section to eliminate the Admin/Feedback URL -->
+    </div>
+  </div>
+</div>
+<!-- /Page Header -->
+          <!-- /Page Header -->
+
+          <!-- Loading Spinner -->
+          <div *ngIf="isLoading" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Chargement...</span>
+            </div>
+          </div>
+
+          <!-- Charts Row -->
+          <div *ngIf="overallStats && !isLoading" class="row">
+            
+            <!-- Overall Statistics -->
+            <div class="col-md-6 mb-4">
+              <div class="card h-100">
+                <div class="card-header bg-light">
+                  <h4 class="card-title mb-0 fw-bold">📊 Statistiques Globales</h4>
+                </div>
+                <div class="card-body">
+                  <p class="card-text text-muted">Total des feedbacks: <strong>{{overallStats.totalFeedbacks}}</strong></p>
+                  <canvas id="overallChart" width="400" height="250"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <!-- Satisfaction Pie Chart -->
+            <div class="col-md-6 mb-4">
+              <div class="card h-100">
+                <div class="card-header bg-light">
+                  <h4 class="card-title mb-0 fw-bold">🥧 Satisfaction Globale</h4>
+                </div>
+                <div class="card-body">
+                  <canvas id="satisfactionPieChart" width="400" height="250"></canvas>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Comparison Chart -->
+          <div *ngIf="offersStats && !isLoading" class="row mt-4">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header bg-light">
+<h4 class="card-title mb-0 fw-bold">📈 Comparaison des opportunités</h4>
+                </div>
+                <div class="card-body">
+                  <canvas id="comparisonChart" width="400" height="300"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feedback List -->
+          <div class="row mt-4">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header bg-light">
+<h4 class="card-title mb-0 fw-bold">📋 Liste des Feedbacks</h4>
+                </div>
+                <div class="card-body">
+                  
+                  <!-- Student Name Debug -->
+                  <div *ngIf="allFeedbacks.length > 0 && !allFeedbacks[0].student" class="alert alert-warning">
+                    ⚠️ Les noms des étudiants ne sont pas chargés. Vérifiez le backend.
+                  </div>
+
+                  <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                      <thead class="table-dark">
+                        <tr>
+                          <th>Étudiant</th>
+                          <th>Offre</th>
+                          <th>Date</th>
+                          <th>Satisfaction</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let feedback of allFeedbacks">
+                          <td>
+                            <span *ngIf="feedback.student; else noStudent">
+                              {{feedback.student.firstname}} {{feedback.student.lastname}}
+                            </span>
+                            <ng-template #noStudent>
+                              <span class="text-muted">Non disponible</span>
+                            </ng-template>
+                          </td>
+                          <td>{{feedback.offer?.type}} - {{feedback.offer?.universite}}</td>
+                          <td>{{feedback.submissionDate | date:'dd/MM/yyyy'}}</td>
+                          <td>
+                            <span class="badge bg-success" *ngIf="feedback.globalSatisfaction >= 4">Élevée</span>
+                            <span class="badge bg-warning" *ngIf="feedback.globalSatisfaction == 3">Moyenne</span>
+                            <span class="badge bg-danger" *ngIf="feedback.globalSatisfaction <= 2">Faible</span>
+                            <small class="text-muted ms-1">({{feedback.globalSatisfaction}}/5)</small>
+                          </td>
+                          <td>
+                            <button class="btn btn-sm btn-outline-info">👁️ Détails</button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <!-- Pagination -->
+                  <nav *ngIf="totalItems > pageSize" class="mt-3">
+                    <ul class="pagination justify-content-center">
+                      <li class="page-item" [class.disabled]="currentPage === 0">
+                        <a class="page-link" (click)="onPageChange(currentPage - 1)">« Précédent</a>
+                      </li>
+                      <li class="page-item" *ngFor="let page of [].constructor(getTotalPages()); let i = index"
+                          [class.active]="i === currentPage">
+                        <a class="page-link" (click)="onPageChange(i)">{{i + 1}}</a>
+                      </li>
+                      <li class="page-item" [class.disabled]="currentPage >= getTotalPages() - 1">
+                        <a class="page-link" (click)="onPageChange(currentPage + 1)">Suivant »</a>
+                      </li>
+                    </ul>
+                  </nav>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- /Content -->
+
+      </div>
+    </div>
+  </div>
+  <!-- /Page Wrapper -->
+
+  <!-- Footer -->
+  <app-footer></app-footer>
+  <!-- /Footer -->
+  
+</div>

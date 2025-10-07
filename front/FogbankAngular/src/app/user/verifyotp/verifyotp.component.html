@@ -1,0 +1,35 @@
+<div class="main-wrapper">
+  <div class="row">
+    <div class="col-md-6 login-bg">
+      <!-- Login Banner (You can keep this section as it is) -->
+      <!-- Paste the code for the login banner here -->
+    </div>
+    <div class="col-md-6 login-wrap-bg">
+      <!-- Verify OTP Section -->
+      <div class="login-wrapper">
+        <div class="loginbox">
+          <div class="img-logo">
+            <img src="assets/img/logo.svg" class="img-fluid" alt="Logo">
+            <div class="back-home">
+              <a routerLink="/">Back to Home</a> <!-- Use Angular's routerLink to navigate -->
+            </div>
+          </div>
+          <h1>Verify OTP</h1>
+          <div class="reset-password">
+            <p>Enter the OTP sent to your email to verify your account.</p>
+          </div>
+          <form (ngSubmit)="verifyOtp()" #otpForm="ngForm"> <!-- Bind ngSubmit event to the verifyOtp() method and reference the form with #otpForm -->
+            <div class="input-block">
+              <label class="form-control-label">OTP</label>
+              <input type="number" class="form-control" name="otp" placeholder="Enter OTP" [(ngModel)]="otp" required> <!-- Use ngModel for two-way data binding and required for validation -->
+            </div>
+            <div class="d-grid">
+              <button class="btn btn-start" type="submit" [disabled]="otpForm.invalid">Verify OTP</button> <!-- Disable the button if the form is invalid -->
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- /Verify OTP Section -->
+    </div>
+  </div>
+</div>

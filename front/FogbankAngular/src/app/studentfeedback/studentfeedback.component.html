@@ -1,0 +1,105 @@
+<!-- src/app/studentfeedback/studentfeedback.component.html -->
+<app-navbar2></app-navbar2>
+<app-student-header></app-student-header>
+
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h3 class="card-title mb-0">Évaluation de l'Expérience de Mobilité</h3>
+          <small>Partagez votre retour d'expérience sur différents aspects pour nous aider à améliorer nos programmes</small>
+        </div>
+        
+        <div class="card-body">
+          <!-- Message Alert -->
+          <div *ngIf="message" class="alert" [class.alert-success]="messageType === 'success'" [class.alert-danger]="messageType === 'error'">
+            {{ message }}
+          </div>
+
+          <!-- Offer Selection -->
+          <div class="mb-4">
+            <label class="form-label fw-bold">Sélectionnez le Programme de Mobilité :</label>
+            <select class="form-select" (change)="onOfferSelect($any($event.target).value)" [disabled]="isLoading">
+              <option value="">-- Choisir un programme --</option>
+              <option *ngFor="let offer of offers" [value]="offer.id">
+                {{ offer.type }} - {{ offer.universite }} ({{ offer.dateDebut | date }} à {{ offer.dateFin | date }})
+              </option>
+            </select>
+          </div>
+
+          <!-- Explanation Section -->
+          <div *ngIf="selectedOfferId" class="alert alert-info mb-4">
+            <h6>Critères d'Évaluation :</h6>
+            <ul class="mb-0">
+              <li><strong>🎓 Expérience Académique :</strong> Pertinence des cours, méthodes d'enseignement, ressources pédagogiques</li>
+              <li><strong>🏠 Vie Étudiante :</strong> Qualité du logement, intégration sociale, activités culturelles</li>
+              <li><strong>🌍 Adaptation Culturelle :</strong> Barrière linguistique, accueil local, intégration sociale</li>
+              <li><strong>📋 Aspects Pratiques :</strong> Support administratif, coût de la vie, accessibilité</li>
+              <li><strong>🎯 Satisfaction Globale :</strong> Expérience générale et développement personnel</li>
+            </ul>
+          </div>
+
+          <!-- Already Submitted Message -->
+          <div *ngIf="hasAlreadySubmitted && existingFeedback" class="alert alert-info">
+            <p>Vous avez déjà soumis votre évaluation pour ce programme le {{ existingFeedback.submissionDate | date:'medium' }}.</p>
+            <p>Vous pouvez consulter vos notes ci-dessous.</p>
+          </div>
+
+          <!-- Feedback Form -->
+          <form *ngIf="selectedOfferId && (!hasAlreadySubmitted || existingFeedback)" (ngSubmit)="onSubmit()">
+            
+            <!-- Rating Categories -->
+            <div class="row">
+              <div class="col-md-6" *ngFor="let category of ratingCategories">
+                <app-star-rating-component
+                  [label]="category.label"
+                  [rating]="getRatingValue(category.key)"
+                  [disabled]="hasAlreadySubmitted"
+                  (ratingChange)="onRatingChange($event, category.key)">
+                </app-star-rating-component>
+              </div>
+            </div>
+
+            <!-- Additional Comments -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">Commentaires Additionnels (Optionnel) :</label>
+              <textarea 
+                class="form-control" 
+                rows="4" 
+                [(ngModel)]="feedback.additionalComments" 
+                name="additionalComments"
+                [disabled]="hasAlreadySubmitted || isLoading"
+                placeholder="Partagez vos réflexions supplémentaires sur votre expérience...">
+              </textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <button 
+                type="button" 
+                class="btn btn-secondary me-md-2" 
+                (click)="goToDashboard()">
+                Annuler
+              </button>
+              <button 
+                type="submit" 
+                class="btn btn-primary"
+                [disabled]="!isFormValid() || hasAlreadySubmitted || isLoading">
+                <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+                {{ hasAlreadySubmitted ? 'Déjà Soumis' : 'Soumettre l\'Évaluation' }}
+              </button>
+            </div>
+          </form>
+
+          <!-- No Offers Message -->
+          <div *ngIf="offers.length === 0" class="alert alert-warning">
+            Vous n'avez aucun programme de mobilité terminé pour lequel fournir une évaluation.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

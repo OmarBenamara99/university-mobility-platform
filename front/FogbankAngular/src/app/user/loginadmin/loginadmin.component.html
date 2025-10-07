@@ -1,0 +1,56 @@
+<!-- Conteneur Principal -->
+
+<div class="col-md-12 login-wrap-bg">
+
+  <!-- Connexion -->
+  <div class="login-wrapper">
+    <div class="loginbox">
+      <div class="w-100">
+        <div class="img-logo">
+          <img src="../../../assets/img/logoo.png" class="img-fluid" alt="Logo">
+          <div class="back-home">
+            <a [routerLink]="['/front']">Retour à l'accueil</a>
+          </div>
+        </div>
+        <h1>Connectez-vous à votre compte</h1>
+        <form (ngSubmit)="signin()">
+          <div class="input-block">
+            <label class="form-control-label">Email</label>
+            <input type="email" class="form-control" placeholder="Entrez votre adresse email" name="email" [(ngModel)]="signinRequest.email">
+          </div>
+          <div class="input-block">
+            <label class="form-control-label">Mot de passe</label>
+            <div class="pass-group">
+              <input type="password" class="form-control pass-input" placeholder="Entrez votre mot de passe" name="password" [(ngModel)]="signinRequest.password">
+              <span class="feather-eye toggle-password"></span>
+            </div>
+          </div>
+          <div class="forgot">
+            <span><a class="forgot-link" [routerLink]="['/forgotpassword']">Mot de passe oublié ?</a></span>
+          </div>
+          <div class="remember-me">
+            <label class="custom_check mr-2 mb-0 d-inline-flex remember-me"> Se souvenir de moi
+              <input type="checkbox" name="rememberMe">
+              <span class="checkmark"></span>
+            </label>
+          </div>
+          <div class="d-grid">
+            <button class="btn btn-primary btn-start" type="submit">Se connecter</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="google-bg text-center">
+      <span><a>Ou connectez-vous avec</a></span>
+      <div class="sign-google">
+        <ul>
+          <li><a><img src="../../../assets/img/net-icon-01.png" class="img-fluid" alt="Logo"> Se connecter avec Google</a></li>
+          <li><a><img src="../../../assets/img/net-icon-02.png" class="img-fluid" alt="Logo"> Se connecter avec Facebook</a></li>
+        </ul>
+      </div>
+      <p class="mb-0">Nouvel utilisateur ? <a [routerLink]="['/registeradmin']">Créer un compte</a></p>
+    </div>
+  </div>
+  <!-- /Connexion -->
+
+</div>

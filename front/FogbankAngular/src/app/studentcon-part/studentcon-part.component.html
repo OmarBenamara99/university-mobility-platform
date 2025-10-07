@@ -1,0 +1,82 @@
+<app-navbar2></app-navbar2>
+<app-student-header></app-student-header>
+
+<!-- Centered Confirmation de Participation -->
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-xl-8 col-lg-10 text-center">
+      <div class="settings-widget profile-details">
+        <div class="settings-menu p-0">
+          <div class="profile-heading text-center">
+            <h3>Confirmation de Participation</h3>
+            <p class="mx-auto" style="max-width: 600px;">Veuillez confirmer votre participation au programme de mobilité</p>
+          </div>
+          
+          <!-- Loading State -->
+          <div *ngIf="loading" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Chargement...</span>
+            </div>
+          </div>
+
+          <!-- Content when loaded -->
+          <div *ngIf="!loading">
+            <!-- Étape 1: Confirmation Oui/Non - Centered -->
+            <div class="address-check-widget comman-space text-center">
+              <h4>Souhaitez-vous poursuivre cette mobilité ?</h4>
+              <div class="check-bill-address d-flex flex-column align-items-center">
+                <div class="edit-new-address wallet-method wallet-radio-blk text-center mb-2">
+                  <label class="radio-inline custom_radio">
+                    <input type="radio" name="participation" 
+                          [(ngModel)]="wantsToParticipate" [value]="true">
+                    <span class="checkmark"></span> Oui
+                  </label>
+                </div>
+                <div class="edit-new-address wallet-method wallet-radio-blk text-center">
+                  <label class="radio-inline custom_radio">
+                    <input type="radio" name="participation" 
+                          [(ngModel)]="wantsToParticipate" [value]="false">
+                    <span class="checkmark"></span> Non
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Étape 2: Choix de mobilité - Centered -->
+            <div class="address-check-widget comman-space text-center" 
+                *ngIf="wantsToParticipate && acceptedOffers.length > 0">
+              <h4>Choisissez la mobilité à poursuivre :</h4>
+              <div class="check-bill-address d-flex flex-column align-items-center">
+                <div *ngFor="let offer of acceptedOffers" 
+                    class="edit-new-address wallet-method wallet-radio-blk text-center mb-2">
+                  <label class="radio-inline custom_radio">
+                    <input type="radio" name="mobilite_choice" 
+                          [value]="offer.id" [(ngModel)]="selectedOfferId">
+                    <span class="checkmark"></span> 
+                    {{offer.titre}} - {{offer.universite}}
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bouton de confirmation - Centered -->
+            <div class="add-new-address grad-border hvr-sweep-to-right mt-4 text-center">
+              <button class="btn btn-primary px-5" 
+                      (click)="onConfirmationSubmit()"
+                      [disabled]="loading || confirmed">
+                {{ confirmed ? 'Confirmé' : 'Confirmer mes choix' }}
+              </button>
+            </div>
+
+            <!-- Success Message -->
+            <div *ngIf="confirmed" class="alert alert-success mt-3">
+              Votre choix a été enregistré avec succès!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

@@ -1,0 +1,30 @@
+/* src/app/components/star-rating/star-rating.component.css */
+.star-rating {
+  margin-bottom: 1rem;
+}
+
+.stars {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.star {
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  color: #ccc;
+}
+
+.star.filled {
+  color: #ffc107;
+}
+
+.star:hover:not(.disabled) {
+  transform: scale(1.2);
+}
+
+.star.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}

@@ -1,0 +1,128 @@
+<app-navbar3></app-navbar3>
+<div class="page-content">
+  <div class="container">
+    <div class="row">
+
+      <!-- Sidebar -->
+      <div class="col-xl-3 col-lg-4 col-md-12 theiaStickySidebar">
+        <app-sidebar2></app-sidebar2>
+      </div>
+      <!-- /Sidebar -->
+
+      <!-- Admin Dashboard -->
+      <div class="col-xl-9 col-lg-8 col-md-12">	
+        <div class="row">
+          <div class="col-md-12">
+            <div class="settings-widget">
+              <div class="settings-inner-blk p-0">
+                <div class="sell-course-head comman-space">
+                  <h3>Demandes d'Extension des Étudiants</h3>
+                  <p>Gérez les demandes d'extension de mobilité des étudiants.</p>
+                </div>
+
+                <!-- Loading Spinner -->
+                <div *ngIf="isLoading" class="text-center py-4">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Chargement...</span>
+                  </div>
+                </div>
+
+                <!-- Extension Requests List -->
+                <div *ngIf="!isLoading">
+                  <div *ngFor="let request of extensionRequests" class="comman-space bdr-bottom-line">
+                    <div class="instruct-review-blk">
+                      <div class="review-item">
+                        <div class="instructor-wrap border-0 m-0">
+                          <div class="about-instructor">
+                            <div class="abt-instructor-img">
+                              <img src="assets/img/user/user1.jpg" alt="img" class="img-fluid">
+                            </div>
+                            <div class="instructor-detail">
+                              <h5>
+                                {{request.student?.firstname}} {{request.student?.lastname}}
+                              </h5>
+                              <p class="mb-1">{{request.title}}</p>
+                              <small class="text-muted">
+                                Soumis le {{request.submissionDate | date:'dd/MM/yyyy à HH:mm'}}
+                              </small>
+                            </div>
+                          </div>
+                          <div class="rating">							
+                            <span class="badge" [class]="getStatusBadgeClass(request.status)">
+                              {{getStatusText(request.status)}}
+                            </span>
+                          </div>
+                        </div>
+                        <p class="rev-info">{{request.description}}</p>
+
+                        <!-- File Download Button -->
+                        <div *ngIf="request.originalFileName" class="mt-3">
+                          <button class="btn btn-sm btn-outline-primary" 
+                                  (click)="downloadFile(request.id!, request.originalFileName!)">
+                            <i class="fas fa-download me-2"></i>
+                            Télécharger {{request.originalFileName}}
+                          </button>
+                        </div>
+
+                        <!-- Response Form -->
+                        <div *ngIf="selectedRequestId === request.id" class="response-form mt-3">
+                          <textarea 
+                            class="form-control" 
+                            rows="3" 
+                            placeholder="Ajoutez un commentaire ou une réponse (optionnel)..."
+                            [(ngModel)]="adminResponse">
+                          </textarea>
+                          <div class="mt-2">
+                            <button class="btn btn-success me-2" (click)="updateRequestStatus(request.id!, ExtensionStatus.APPROVED)">
+                              <i class="fas fa-check me-2"></i>Approuver
+                            </button>
+                            <button class="btn btn-danger me-2" (click)="updateRequestStatus(request.id!, ExtensionStatus.REJECTED)">
+                              <i class="fas fa-times me-2"></i>Rejeter
+                            </button>
+                            <button class="btn btn-info me-2" (click)="updateRequestStatus(request.id!, ExtensionStatus.UNDER_REVIEW)">
+                              <i class="fas fa-clock me-2"></i>En Cours
+                            </button>
+                            <button class="btn btn-secondary" (click)="cancelResponse()">
+                              Annuler
+                            </button>
+                          </div>
+                        </div>
+
+                        <!-- Admin Response Display -->
+                        <div *ngIf="request.adminResponse" class="alert alert-info mt-3">
+                          <strong>Réponse de l'administrateur:</strong><br>
+                          {{request.adminResponse}}
+                          <div class="text-muted small mt-1">
+                            Traité le {{request.responseDate | date:'dd/MM/yyyy à HH:mm'}}
+                          </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div *ngIf="selectedRequestId !== request.id" class="mt-3">
+                          <button class="btn btn-primary me-2" (click)="openResponseForm(request.id!)">
+                            <i class="fas fa-edit me-2"></i>Traiter
+                          </button>
+                        </div>
+                      </div>
+                    </div>								
+                  </div>
+
+                  <!-- No Requests Message -->
+                  <div *ngIf="extensionRequests.length === 0" class="comman-space">
+                    <div class="alert alert-info">
+                      Aucune demande d'extension pour le moment.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>	
+      <!-- /Admin Dashboard -->
+
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

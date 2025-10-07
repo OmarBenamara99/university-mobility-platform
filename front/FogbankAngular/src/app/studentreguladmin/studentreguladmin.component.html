@@ -1,0 +1,175 @@
+<app-navbar2></app-navbar2>
+<app-student-header></app-student-header>
+
+<!-- Centered Régularisation Administrative -->
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-xl-8 col-lg-10">
+      <div class="settings-widget profile-details">
+        <div class="settings-menu p-0">
+          <div class="profile-heading text-center">
+            <h3>Régularisation Administrative</h3>
+            <p class="mx-auto" style="max-width: 600px;">
+              Complétez votre dossier administratif en choisissant votre mode de paiement et en uploadant les documents requis.
+            </p>
+          </div>
+          
+          <!-- Loading State -->
+          <div *ngIf="loading" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Chargement...</span>
+            </div>
+          </div>
+
+          <!-- Content when loaded -->
+          <div *ngIf="!loading && administrativeFile">
+            <!-- Étape 1: Choix du mode de paiement -->
+            <div class="address-check-widget comman-space">
+              <h4>Choisissez votre mode de paiement :</h4>
+              <div class="check-bill-address">
+                <div class="edit-new-address wallet-method wallet-radio-blk mb-2">
+                  <label class="radio-inline custom_radio">
+                    <input type="radio" name="paymentMethod" 
+                          [value]="paymentMethods.IMMEDIATE_FULL_PAYMENT" 
+                          [(ngModel)]="administrativeFile.paymentMethod"
+                          (change)="onPaymentMethodChange()">
+                    <span class="checkmark"></span> 
+                    Paiement immédiat en totalité
+                  </label>
+                </div>
+                <div class="edit-new-address wallet-method wallet-radio-blk">
+                  <label class="radio-inline custom_radio">
+                    <input type="radio" name="paymentMethod" 
+                          [value]="paymentMethods.PAYMENT_BY_CHEQUES" 
+                          [(ngModel)]="administrativeFile.paymentMethod"
+                          (change)="onPaymentMethodChange()">
+                    <span class="checkmark"></span> 
+                    Paiement par chèques
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Étape 2: Upload des documents selon le choix -->
+            <div *ngIf="administrativeFile.paymentMethod" class="comman-space">
+              
+              <!-- Upload Reçu de paiement -->
+              <div *ngIf="administrativeFile.paymentMethod === paymentMethods.IMMEDIATE_FULL_PAYMENT" 
+                  class="input-block">
+                <label class="add-course-label">Reçu de paiement</label>
+                
+                <div class="file-drop" 
+                    (drop)="onDrop($event, 'receipt')" 
+                    (dragover)="onDragOver($event)" 
+                    (dragleave)="onDragLeave($event)" 
+                    [class.dragover]="isDragOver">
+                  <form class="dropzone" (click)="receiptInput.click()">
+                    <p>Glissez-déposez votre reçu ici ou cliquez pour parcourir</p>
+                    <input 
+                      type="file" 
+                      #receiptInput 
+                      (change)="onFileSelected($event, 'receipt')" 
+                      accept=".pdf,.jpg,.jpeg,.png" 
+                      hidden
+                    />
+                  </form>
+                </div>
+
+                <div class="accept-drag-file">
+                  <p>Formats acceptés: PDF, JPG, JPEG, PNG</p>
+                </div>
+
+                <div *ngIf="receiptFile" class="preview-file mt-3">
+                  <span class="file-name">{{ receiptFile.name }}</span>
+                  <button class="btn btn-sm btn-outline-danger ms-2" (click)="removeFile('receipt')">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Upload Chèques -->
+              <div *ngIf="administrativeFile.paymentMethod === paymentMethods.PAYMENT_BY_CHEQUES" 
+                  class="input-block">
+                <label class="add-course-label">Chèques (PDF unique)</label>
+                
+                <div class="file-drop" 
+                    (drop)="onDrop($event, 'cheques')" 
+                    (dragover)="onDragOver($event)" 
+                    (dragleave)="onDragLeave($event)" 
+                    [class.dragover]="isDragOver">
+                  <form class="dropzone" (click)="chequesInput.click()">
+                    <p>Glissez-déposez vos chèques ici ou cliquez pour parcourir</p>
+                    <input 
+                      type="file" 
+                      #chequesInput 
+                      (change)="onFileSelected($event, 'cheques')" 
+                      accept=".pdf,.jpg,.jpeg,.png" 
+                      hidden
+                    />
+                  </form>
+                </div>
+
+                <div class="accept-drag-file">
+                  <p>Formats acceptés: PDF, JPG, JPEG, PNG</p>
+                </div>
+
+                <div *ngIf="chequesFile" class="preview-file mt-3">
+                  <span class="file-name">{{ chequesFile.name }}</span>
+                  <button class="btn btn-sm btn-outline-danger ms-2" (click)="removeFile('cheques')">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Bouton de soumission -->
+            <div class="add-new-address grad-border hvr-sweep-to-right mt-4 text-center">
+              <button class="btn btn-primary px-5" 
+                      (click)="onSubmit()"
+                      [disabled]="!canSubmit() || submitting">
+                {{ submitting ? 'Traitement...' : 'Soumettre mon dossier' }}
+              </button>
+            </div>
+
+            <!-- Status Messages -->
+            <div *ngIf="successMessage" class="alert alert-success mt-3">
+              {{ successMessage }}
+            </div>
+            <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+              {{ errorMessage }}
+            </div>
+
+            <!-- Current Status Display -->
+            <div class="status-display mt-4 p-3 border rounded">
+              <h5>Statut actuel:</h5>
+              <span class="badge" 
+                  [ngClass]="{
+                    'bg-warning': administrativeFile.status === fileStatus.PENDING_PAYMENT_CHOICE,
+                    'bg-info': administrativeFile.status === fileStatus.PENDING_UPLOAD,
+                    'bg-primary': administrativeFile.status === fileStatus.UNDER_REVIEW,
+                    'bg-success': administrativeFile.status === fileStatus.COMPLETED,
+                    'bg-danger': administrativeFile.status === fileStatus.CANCELLED
+                  }">
+                {{ getStatusText(administrativeFile.status) }}
+              </span>
+              <p class="mt-2 small text-muted">
+                Dernière mise à jour: {{ administrativeFile.lastUpdated | date:'medium' }}
+              </p>
+            </div>
+          </div>
+
+          <!-- No administrative file found -->
+          <div *ngIf="!loading && !administrativeFile" class="text-center py-4">
+            <div class="alert alert-info">
+              <p>Aucun dossier administratif trouvé pour le moment.</p>
+              <p>Veuillez d'abord confirmer votre participation à une mobilité.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

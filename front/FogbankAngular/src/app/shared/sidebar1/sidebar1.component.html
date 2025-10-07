@@ -1,0 +1,68 @@
+<div class="settings-widget dash-profile mb-3">
+  <div class="settings-menu p-0">
+    <div class="profile-bg">
+      <h5>Beginner</h5>
+      <img src="../../../assets/img/profile-bg.jpg" alt="">
+      <div class="profile-img">
+        <a href="student-profile.html"><img src="../../../assets/img/user/user11.jpg" alt=""></a>
+      </div>
+    </div>
+    <div class="profile-group">
+      <div class="profile-name text-center">
+        <h4><a href="student-profile.html">Rolands R</a></h4>
+        <p>Student</p>
+      </div>
+      <div class="go-dashboard text-center">
+        <a [routerLink]="['/student/dahboard']" class="btn btn-primary">Go to Dashboard</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="settings-widget account-settings">
+  <div class="settings-menu">
+    <h3>DASHBOARD</h3>
+    <ul>
+      <li class="nav-item active">
+        <a [routerLink]="['/student/dahboard']" class="nav-link">
+          <i class="feather-home"></i> My Dashboard
+        </a>
+      </li>
+      <li class="nav-item">
+        <a [routerLink]="['/student/myarticle']" class="nav-link">
+          <i class="feather-book"></i> My Article
+        </a>
+      </li>
+
+
+    </ul>
+    <div class="instructor-title">
+      <h3>ACCOUNT SETTINGS</h3>
+    </div>
+    <ul>
+      <li class="nav-item">
+        <a [routerLink]="['/student/edit']" class="nav-link ">
+          <i class="feather-settings"></i> Edit Profile
+        </a>
+      </li>
+
+
+
+
+      <li class="nav-item">
+        <a [routerLink]="['/student/delete']" class="nav-link">
+          <i class="feather-trash-2"></i> Delete Profile
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="index.html" class="nav-link">
+          <i class="feather-power"    (click)="logout()"></i> Sign Out
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+

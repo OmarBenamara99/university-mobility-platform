@@ -1,0 +1,428 @@
+<app-navbar3></app-navbar3>
+<div class="page-content">
+  <div class="container">
+    <div class="row">
+
+      <!-- Sidebar -->
+      <div class="col-xl-3 col-lg-4 col-md-12 theiaStickySidebar">
+        <app-sidebar2></app-sidebar2>
+      </div>
+      <!-- /Sidebar -->
+
+      <!-- Main Content -->
+      <div class="col-xl-9 col-lg-8 col-md-12">
+        
+        <div class="settings-widget">
+          <div class="settings-inner-blk p-0">
+            <div class="comman-space pb-0">
+              
+              <div class="filter-grp user-referred table-select-blk d-flex align-items-center justify-content-between">
+                <h3>Gestion des Documents d'Équivalence</h3>
+              </div>
+
+              <!-- File Upload Section -->
+              <div class="card mb-4">
+                <div class="card-header bg-light">
+                  <h5 class="mb-0">
+                    <i class="fas fa-file-upload me-2 text-primary"></i>
+                    Télécharger un Document d'Équivalence
+                  </h5>
+                </div>
+                <div class="card-body">
+                  
+                  <div class="input-block">
+                    <label class="add-course-label">Document d'Équivalence</label>
+
+                    <div 
+                      class="file-drop" 
+                      (drop)="onDrop($event)" 
+                      (dragover)="onDragOver($event)" 
+                      (dragleave)="onDragLeave($event)" 
+                      [class.dragover]="isDragOver"
+                      style="border: 2px dashed #ccc; padding: 20px; text-align: center; border-radius: 8px; cursor: pointer;"
+                    >
+                      <form class="dropzone" (click)="fileInput.click()">
+                        <p>
+                          <i class="fas fa-cloud-upload-alt fa-2x text-muted mb-2"></i><br>
+                          Glissez-déposez le fichier PDF ici<br>
+                          ou <strong>cliquez pour sélectionner</strong>
+                        </p>
+                        <input 
+                          type="file" 
+                          #fileInput 
+                          (change)="onFileSelected($event)" 
+                          accept=".pdf,application/pdf" 
+                          hidden
+                        />
+                      </form>
+                    </div>
+
+                    <div class="accept-drag-file mt-2">
+                      <p class="text-muted small">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Formats acceptés: PDF (max 5MB)
+                      </p>
+                    </div>
+
+                    <!-- Selected file info -->
+                    <div *ngIf="selectedFile" class="selected-file-info mt-3 p-3 bg-light rounded">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <span>
+                          <i class="fas fa-file-pdf text-danger me-2"></i>
+                          {{ getFileName() }}
+                          <small class="text-muted">({{ selectedFile.size / (1024 * 1024) | number:'1.1-1' }} MB)</small>
+                        </span>
+                        <button class="btn btn-sm btn-outline-danger" (click)="clearFileSelection()">
+                          <i class="fas fa-times"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Offers List -->
+              <div *ngFor="let offre of offres" class="card mb-4">
+                <div class="card-header">
+                  <div class="add-course-inner-header ps-0 d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0">{{ offre.titre }} – {{ offre.universite }}</h4>
+                    <div class="go-dashboard text-center">
+                      <button 
+                        class="btn btn-primary btn-sm" 
+                        (click)="uploadDocument(offre.id!)"
+                        [disabled]="!selectedFile || uploadInProgress[offre.id!]"
+                      >
+                        <span *ngIf="uploadInProgress[offre.id!]">
+                          <i class="fas fa-spinner fa-spin"></i> Téléchargement...
+                        </span>
+                        <span *ngIf="!uploadInProgress[offre.id!]">
+                          <i class="fas fa-upload"></i> Envoyer le Document
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Upload Status Messages -->
+                <div class="card-body">
+                  <div *ngIf="uploadSuccess[offre.id!]" class="alert alert-success alert-dismissible fade show">
+                    <i class="fas fa-check-circle"></i>
+                    Document téléchargé avec succès!
+                    <button type="button" class="btn-close" (click)="uploadSuccess[offre.id!] = false"></button>
+                  </div>
+                  
+                  <div *ngIf="uploadError[offre.id!]" class="alert alert-danger alert-dismissible fade show">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ uploadError[offre.id!] }}
+                    <button type="button" class="btn-close" (click)="uploadError[offre.id!] = ''"></button>
+                  </div>
+
+                  <!-- Existing Documents -->
+                  <div *ngIf="(documentsByOffer[offre.id!] || []).length > 0" class="mt-3">
+                    <h6>Documents existants:</h6>
+                    <div class="list-group">
+                      <div *ngFor="let doc of documentsByOffer[offre.id!]" class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                          <i class="fas fa-file-pdf text-danger me-2"></i>
+                          {{ doc.originalFileName }}
+                          <small class="text-muted d-block">
+                            Ajouté le {{ doc.uploadDate | date:'dd/MM/yyyy à HH:mm' }}
+                          </small>
+                        </div>
+                        <div>
+                          <button class="btn btn-sm btn-outline-primary me-2" (click)="downloadDocument(doc)">
+                            <i class="fas fa-download"></i> Télécharger
+                          </button>
+                          <button class="btn btn-sm btn-outline-danger" (click)="deleteDocument(doc.id!, offre.id!)">
+                            <i class="fas fa-trash"></i> Supprimer
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div *ngIf="!documentsByOffer[offre.id!]?.length" class="text-muted">
+                    Aucun document d'équivalence pour cette offre.
+                  </div>
+                </div>
+              </div>
+
+              
+
+            </div>
+            
+          </div>
+          
+        </div>
+<!-- Student Choices Table Section -->
+<div class="settings-widget mt-4">
+  <div class="settings-inner-blk p-0">
+    <div class="comman-space pb-0">
+      <div class="sell-course-head withdraw-history-head border-bottom-0">
+        <h3>Choix des Examens des Étudiants</h3>
+        <p>Consultez les choix d'examens que les étudiants ont sélectionnés pour chaque opportunité.</p>
+      </div>
+      
+      <!-- Filters -->
+      <div class="instruct-search-blk mb-0">
+        <div class="show-filter all-select-blk">
+          <form action="#">
+            <div class="row gx-2 align-items-center">	
+              <div class="col-md-6 col-lg-4 col-item">
+                <div class="input-block select-form mb-0">
+                  <select class="form-select select" [(ngModel)]="selectedOfferFilter" name="offerFilter" (change)="loadExamChoices()">
+                    <option [ngValue]="null">Toutes les opportunités</option>
+                    <option *ngFor="let offre of offres" [value]="offre.id">{{ offre.titre }} - {{ offre.universite }}</option>
+                  </select>
+                </div>
+              </div>	
+              <div class="col-md-6 col-lg-4 col-item">
+                <div class="input-block select-form mb-0">
+                  <select class="form-select select" [(ngModel)]="selectedChoiceFilter" name="choiceFilter" (change)="loadExamChoices()">
+  <option [ngValue]="null">Tous les choix</option> <!-- Change this line -->
+                    <option value="ESPRIT">ESPIRIT</option>
+                    <option value="PARTNER_UNIVERSITY">Université Partenaire</option>
+                    <option value="COMBINATION">Combinaison</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4 col-item">
+                <div class="download-widra">
+                  <button class="btn btn-outline-primary" (click)="exportToCSV()">
+                    <i class="feather-download"></i> Exporter CSV
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Student Choices Table -->
+    <div class="comman-space pb-0">
+      <div class="settings-referral-blk course-instruct-blk table-responsive">
+        <table class="table table-nowrap mb-0">
+          <thead>
+  <tr>
+    <th>Étudiant</th>
+    <th>Opportunité</th>
+    <th>Choix</th>
+    <th>Relevé de Notes</th> <!-- Add this new column -->
+    <th>Date de Soumission</th>
+    <th>Statut</th>
+  </tr>
+</thead>
+          <tbody>
+            <!-- Loading State -->
+            <tr *ngIf="isLoadingChoices">
+  <td colspan="6" class="text-center py-4"> <!-- Change from 5 to 6 -->
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+  </td>
+</tr>
+
+            <!-- No Data State -->
+            <tr *ngIf="!isLoadingChoices && examChoices.length === 0">
+  <td colspan="6" class="text-center py-4 text-muted"> <!-- Change from 5 to 6 -->
+    Aucun choix d'examen trouvé.
+  </td>
+</tr>
+
+            <!-- Data Rows -->
+            <tr *ngFor="let choice of examChoices">
+  <td>
+    <div class="d-flex align-items-center">
+      <img src="assets/img/user/user1.jpg" alt="User" class="avatar-img rounded-circle me-2" style="width: 32px; height: 32px;">
+      <div>
+        <strong>{{ choice.student?.firstname }} {{ choice.student?.lastname }}</strong>
+        <br>
+        <small class="text-muted">{{ choice.student?.email }}</small>
+      </div>
+    </div>
+  </td>
+  <td>
+    <strong>{{ choice.offer?.titre }}</strong>
+    <br>
+    <small class="text-muted">{{ choice.offer?.universite }}</small>
+  </td>
+  <td>
+    <span class="badge" 
+          [class.badge-primary]="choice.choice === 'ESPRIT'"
+          [class.badge-success]="choice.choice === 'PARTNER_UNIVERSITY'"
+          [class.badge-info]="choice.choice === 'COMBINATION'">
+      {{ getChoiceText(choice.choice) }}
+    </span>
+  </td>
+  <td>
+  <!-- Add this transcript download section -->
+  <ng-container *ngIf="getStudentTranscript(choice.student.id); let transcript">
+    <button class="btn btn-sm btn-outline-primary" 
+            (click)="downloadStudentTranscript(transcript)"
+            title="Télécharger le relevé de notes">
+      <i class="fas fa-download"></i> Télécharger
+    </button>
+    <br>
+    <small class="text-muted">
+      {{ transcript.uploadDate | date:'dd/MM/yyyy' }}
+    </small>
+  </ng-container>
+  <span *ngIf="!getStudentTranscript(choice.student.id)" class="text-muted">
+    Non soumis
+  </span>
+</td>
+  <td>
+    {{ choice.submissionDate | date:'dd/MM/yyyy à HH:mm' }}
+  </td>
+  <td>
+    <span class="badge badge-success">Confirmé</span>
+  </td>
+</tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="d-flex justify-content-between align-items-center mt-3">
+        <div class="text-muted">
+          Affichage de {{ examChoices.length }} résultats
+        </div>
+        <nav>
+          <ul class="pagination mb-0">
+            <li class="page-item" [class.disabled]="currentPage === 0">
+              <a class="page-link" (click)="changePage(currentPage - 1)">Précédent</a>
+            </li>
+            <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index"
+                [class.active]="i === currentPage">
+              <a class="page-link" (click)="changePage(i)">{{ i + 1 }}</a>
+            </li>
+            <li class="page-item" [class.disabled]="currentPage >= totalPages - 1">
+              <a class="page-link" (click)="changePage(currentPage + 1)">Suivant</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Student Transcripts Table Section -->
+<div class="settings-widget mt-4">
+  <div class="settings-inner-blk p-0">
+    <div class="comman-space pb-0">
+      <div class="sell-course-head withdraw-history-head border-bottom-0">
+        <h3>Relevés de Notes des Étudiants</h3>
+        <p>Consultez les relevés de notes que les étudiants ont téléchargés pour chaque opportunité.</p>
+      </div>
+    </div>
+    
+    <!-- Student Transcripts Table -->
+    <div class="comman-space pb-0">
+      <div class="settings-referral-blk course-instruct-blk table-responsive">
+        <table class="table table-nowrap mb-0">
+          <thead>
+            <tr>
+              <th>Étudiant</th>
+              <th>Opportunité</th>
+              <th>Fichier</th>
+              <th>Date de Soumission</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Loading State -->
+            <tr *ngIf="isLoadingTranscripts">
+              <td colspan="5" class="text-center py-4">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Chargement...</span>
+                </div>
+              </td>
+            </tr>
+
+            <!-- No Data State -->
+            <tr *ngIf="!isLoadingTranscripts && studentTranscripts.length === 0">
+              <td colspan="5" class="text-center py-4 text-muted">
+                Aucun relevé de notes trouvé.
+              </td>
+            </tr>
+
+            <!-- Data Rows -->
+            <tr *ngFor="let transcript of studentTranscripts">
+              <td>
+                <div class="d-flex align-items-center">
+                  <img src="assets/img/user/user1.jpg" alt="User" class="avatar-img rounded-circle me-2" style="width: 32px; height: 32px;">
+                  <div>
+                    <strong>{{ transcript.student?.firstname }} {{ transcript.student?.lastname }}</strong>
+                    <br>
+                    <small class="text-muted">{{ transcript.student?.email }}</small>
+                  </div>
+                </div>
+              </td>
+              <td>
+  <strong>{{ transcript.offer?.titre }}</strong>
+  <br>
+  <small class="text-muted">{{ transcript.offer?.universite }}</small>
+</td>
+              <td>
+                <i class="fas fa-file-pdf text-danger me-2"></i>
+                {{ transcript.originalFileName }}
+              </td>
+              <td>
+                {{ transcript.uploadDate | date:'dd/MM/yyyy à HH:mm' }}
+              </td>
+              <td>
+                <button class="btn btn-sm btn-outline-primary me-2" 
+                        (click)="downloadStudentTranscript(transcript)"
+                        title="Télécharger le relevé de notes">
+                  <i class="fas fa-download"></i> Télécharger
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination for Transcripts -->
+      <div class="d-flex justify-content-between align-items-center mt-3">
+        <div class="text-muted">
+          Affichage de {{ studentTranscripts.length }} résultats
+        </div>
+        <nav>
+          <ul class="pagination mb-0">
+            <li class="page-item" [class.disabled]="currentTranscriptPage === 0">
+              <a class="page-link" (click)="changeTranscriptPage(currentTranscriptPage - 1)">Précédent</a>
+            </li>
+            <li class="page-item" *ngFor="let page of [].constructor(totalTranscriptPages); let i = index"
+                [class.active]="i === currentTranscriptPage">
+              <a class="page-link" (click)="changeTranscriptPage(i)">{{ i + 1 }}</a>
+            </li>
+            <li class="page-item" [class.disabled]="currentTranscriptPage >= totalTranscriptPages - 1">
+              <a class="page-link" (click)="changeTranscriptPage(currentTranscriptPage + 1)">Suivant</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+      </div>
+      
+      <!-- /Main Content -->
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<app-footer></app-footer>

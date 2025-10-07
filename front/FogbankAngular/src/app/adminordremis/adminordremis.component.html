@@ -1,0 +1,133 @@
+<app-navbar3></app-navbar3>
+<div class="page-content">
+  <div class="container">
+    <div class="row">
+
+      <!-- Sidebar -->
+      <div class="col-xl-3 col-lg-4 col-md-12 theiaStickySidebar">
+        <app-sidebar2></app-sidebar2>
+      </div>
+      <!-- /Sidebar -->
+
+      <!-- Main Content -->
+      <div class="col-xl-9 col-lg-8 col-md-12">
+        
+        <div class="settings-widget">
+          <div class="settings-inner-blk p-0">
+            <div class="comman-space pb-0">
+              
+              <div class="filter-grp user-referred table-select-blk d-flex align-items-center justify-content-between">
+                <h3>Gestion des Ordres de Mission</h3>
+              </div>
+
+              <!-- File Upload Section -->
+              <div class="card mb-4">
+                <div class="card-header bg-light">
+                  <h5 class="mb-0">
+                    <i class="fas fa-file-upload me-2 text-primary"></i>
+                    Télécharger l'Ordre de Mission
+                  </h5>
+                </div>
+                <div class="card-body">
+                  
+                  <div class="input-block">
+                    <label class="add-course-label">Fichier Ordre de Mission</label>
+
+                    <div 
+                      class="file-drop" 
+                      (drop)="onDrop($event)" 
+                      (dragover)="onDragOver($event)" 
+                      (dragleave)="onDragLeave($event)" 
+                      [class.dragover]="isDragOver"
+                      style="border: 2px dashed #ccc; padding: 20px; text-align: center; border-radius: 8px; cursor: pointer;"
+                    >
+                      <form class="dropzone" (click)="fileInput.click()">
+                        <p>
+                          <i class="fas fa-cloud-upload-alt fa-2x text-muted mb-2"></i><br>
+                          Glissez-déposez le fichier PDF ici<br>
+                          ou <strong>cliquez pour sélectionner</strong>
+                        </p>
+                        <input 
+                          type="file" 
+                          #fileInput 
+                          (change)="onFileSelected($event)" 
+                          accept=".pdf,application/pdf" 
+                          hidden
+                        />
+                      </form>
+                    </div>
+
+                    <div class="accept-drag-file mt-2">
+                      <p class="text-muted small">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Formats acceptés: PDF (max 5MB)
+                      </p>
+                    </div>
+
+                    <!-- Selected file info -->
+                    <div *ngIf="selectedFile" class="selected-file-info mt-3 p-3 bg-light rounded">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <span>
+                          <i class="fas fa-file-pdf text-danger me-2"></i>
+                          {{ getFileName() }}
+<small class="text-muted">({{ selectedFile.size / (1024 * 1024) | number:'1.1-1' }} MB)</small>                        </span>
+                        <button class="btn btn-sm btn-outline-danger" (click)="clearFileSelection()">
+                          <i class="fas fa-times"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Offers List -->
+              <div *ngFor="let offre of offres" class="card mb-4">
+                <div class="card-header">
+                  <div class="add-course-inner-header ps-0 d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0">{{ offre.titre }} – {{ offre.universite }}</h4>
+                    <div class="go-dashboard text-center">
+                      <button 
+                        class="btn btn-primary btn-sm" 
+                        (click)="uploadOrdreMission(offre.id!)"
+                        [disabled]="!selectedFile || uploadInProgress[offre.id!]"
+                      >
+                        <span *ngIf="uploadInProgress[offre.id!]">
+                          <i class="fas fa-spinner fa-spin"></i> Téléchargement...
+                        </span>
+                        <span *ngIf="!uploadInProgress[offre.id!]">
+                          <i class="fas fa-upload"></i> Envoyer l'Ordre de Mission
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Upload Status Messages -->
+                <div class="card-body">
+                  <div *ngIf="uploadSuccess[offre.id!]" class="alert alert-success alert-dismissible fade show">
+                    <i class="fas fa-check-circle"></i>
+                    Ordre de Mission téléchargé avec succès!
+                    <button type="button" class="btn-close" (click)="uploadSuccess[offre.id!] = false"></button>
+                  </div>
+                  
+                  <div *ngIf="uploadError[offre.id!]" class="alert alert-danger alert-dismissible fade show">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ uploadError[offre.id!] }}
+                    <button type="button" class="btn-close" (click)="uploadError[offre.id!] = ''"></button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- /Main Content -->
+
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

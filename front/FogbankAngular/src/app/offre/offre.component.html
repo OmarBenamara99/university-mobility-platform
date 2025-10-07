@@ -1,0 +1,274 @@
+<!-- Page Wrapper -->
+<app-navbar3></app-navbar3>
+<div class="page-content">
+  <div class="container">
+    <div class="row">
+
+      <!-- Sidebar -->
+      <div class="col-xl-3 col-lg-4 col-md-12 theiaStickySidebar">
+        <app-sidebar2></app-sidebar2>
+      </div>
+      <!-- /Sidebar -->
+
+      <!-- Contenu principal -->
+<div class="col-xl-9 col-lg-8 col-md-12">
+  <div class="card">
+
+    <!-- 🟩 Liste des offres -->
+    <div *ngIf="modeFormulaire === 'affichage'" class="settings-widget">
+      <div class="settings-inner-blk p-0">
+        <div class="comman-space pb-0">
+          <div class="filter-grp user-referred table-select-blk d-flex align-items-center justify-content-between">
+            <h3>Liste des opportunités de mobilité</h3>
+            <div class="go-dashboard text-center">
+              <button class="btn btn-primary" (click)="ouvrirAjout()">Nouvelle Opportunité</button>
+            </div>
+          </div>
+
+          <div class="settings-referral-blk table-responsive">
+            <table class="table table-nowrap mb-0">
+              <thead>
+                <tr>
+                  <th>Université partenaire</th>
+                  <th>Type de mobilité</th>
+                  <th>Date de début</th>
+                  <th>Date de fin</th>
+                  <th>Statut</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let offre of offres">
+                  <td>
+                    <a href="student-profile.html" class="refer-avatar-blk d-flex align-items-center">
+                      
+                      <p>{{ offre.universite }}</p>
+                    </a>
+                  </td>
+                  <td>{{ offre.type }}</td>
+                  <td>{{ offre.dateDebut }}</td>
+                  <td>{{ offre.dateFin }}</td>
+                  <td class="text-center">
+  <span 
+    class="badge"
+    [ngClass]="offre.active ? 'bg-success text-white' : 'bg-danger text-white'"
+    style="font-size: 0.95rem; padding: 6px 10px;">
+    {{ offre.active ? 'Active' : 'Inactive' }}
+  </span>
+</td>
+
+
+                  <td class="text-end">
+                    <ul class="grp-action-style inline-inline">
+                      <li class="list-inline-item">
+                        <a href="javascript:void(0);" class="btn btn-action-style btn-action-dark" (click)="ouvrirModification(offre)"><i class="fa-regular fa-pen-to-square"></i></a>
+                      </li>
+                      <li class="list-inline-item">
+<a href="javascript:void(0);" class="btn btn-action-style btn-action-delete"
+   *ngIf="offre.id !== undefined"
+   (click)="deleteOffre(offre.id)">
+  <i class="fa-regular fa-trash-can"></i>
+</a>                      </li>
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- 🟦 Formulaire d'ajout d'offre -->
+    <div *ngIf="modeFormulaire === 'ajout' || modeFormulaire === 'modification'" class="settings-widget">
+      <div class="settings-inner-blk p-0">
+        <div class="comman-space">
+          <div class="filter-grp d-flex align-items-center justify-content-between mb-3">
+            <h3>{{ modeFormulaire === 'modification' ? 'Modifier une opportunité de mobilité' : 'Ajouter une opportunité de mobilité' }}</h3>
+			<div class="go-dashboard text-center">
+              <button class="btn btn-primary" (click)="annuler()">Retour</button>
+            </div>
+          </div>
+
+          <!-- Exemple de formulaire simple -->
+          <div class="input-block">
+            <label class="form-label">Titre de l’opportunité</label>
+            <input type="text" class="form-control" [(ngModel)]="newOffre.titre" name="titre" placeholder="Ex: Mobilité en double diplôme à l'INSA Lyon">
+          </div>
+
+          <div class="input-block">
+            <label class="form-label">Université partenaire</label>
+            <select class="form-select" [(ngModel)]="newOffre.universite" name="universite">
+              <option disabled selected value="">-- Choisir une université partenaire --</option>
+  			<option *ngFor="let u of Universite" [value]="u">{{ u }}</option>
+			</select>
+
+          </div>
+
+          <div class="input-block">
+            <label class="form-label">Type</label>
+            <select class="form-select" [(ngModel)]="newOffre.type" name="type">
+              <option disabled selected value="">-- Choisir le type de mobilité --</option>
+  			<option *ngFor="let t of OffreType" [value]="t">{{ t }}</option>
+			</select>
+          </div>
+		  <div class="input-block">
+  			<label class="form-label">Description</label>
+  			<textarea class="form-control" rows="5" [(ngModel)]="newOffre.description" name="description" placeholder="Ex: Cette mobilité permet aux étudiants de valider un double diplôme en informatique..."></textarea>
+
+			</div>
+
+			<div class="input-block">
+  <label class="form-label">Options concernées</label>
+  <div class="card search-filter">
+    <div class="card-body">
+      <div class="filter-widget mb-0">
+        <div class="categories-head d-flex align-items-center">
+          <h4>Choisissez les options</h4>
+          <i class="fas fa-angle-down"></i>
+        </div>
+
+        <div *ngFor="let option of OptionEsprit">
+          <label class="custom_check">
+            <input 
+              type="checkbox"
+              [value]="option"
+              (change)="onOptionChange($event)"
+              [checked]="newOffre.optionsConcernees.includes(option)"
+            >
+            <span class="checkmark"></span> {{ option }}
+          </label>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+		  <div class="input-block">
+  <label class="form-label">Domaines d’études disponibles</label>
+  <div class="card search-filter">
+    <div class="card-body">
+      <div class="filter-widget mb-0">
+        <div class="categories-head d-flex align-items-center">
+          <h4>Choisissez les champs</h4>
+          <i class="fas fa-angle-down"></i>
+        </div>
+
+        <div *ngFor="let field of FieldDisponible">
+          <label class="custom_check">
+            <input 
+              type="checkbox"
+              [value]="field"
+              (change)="onFieldChange($event)"
+              [checked]="newOffre.fieldsDisponibles.includes(field)"
+            >
+            <span class="checkmark"></span> {{ field }}
+          </label>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+			<div class="input-block">
+            <label class="form-label">Pays</label>
+		  <select class="form-select" [(ngModel)]="newOffre.pays" name="pays">
+        <option disabled selected value="">-- Sélectionner un pays --</option>
+  <option *ngFor="let p of Pays" [value]="p">{{ p }}</option>
+</select>
+</div>
+
+
+
+          <div class="input-block">
+            <label class="form-label">Date de début</label>
+            <input type="date" class="form-control" [(ngModel)]="newOffre.dateDebut" name="dateDebut">
+          </div>
+
+          <div class="input-block">
+            <label class="form-label">Date de fin</label>
+            <input type="date" class="form-control" [(ngModel)]="newOffre.dateFin" name="dateFin">
+          </div>
+		  <div class="input-block">
+            <label class="form-label">Nombre de places</label>
+            <input type="number" class="form-control" [(ngModel)]="newOffre.nombrePlaces" name="places">
+          </div>
+
+
+		  
+		  <div class="input-block">
+  <label class="form-label">Statut</label>
+  <div class="form-check form-switch check-on d-flex align-items-center gap-2">
+    <input 
+      class="form-check-input" 
+      type="checkbox" 
+      id="statutSwitch" 
+      (change)="onToggleStatut($event)" 
+      [checked]="newOffre.active">
+
+    <label class="form-check-label" for="statutSwitch" style="margin-left: 10px;">
+      {{ newOffre.active ? 'Active' : 'Inactive' }}
+    </label>
+  </div>
+</div>
+
+
+		  <div class="input-block">
+  <label class="add-course-label">Images associées</label>
+
+  <div 
+    class="file-drop" 
+    (drop)="onDrop($event)" 
+    (dragover)="onDragOver($event)" 
+    (dragleave)="onDragLeave($event)" 
+    [class.dragover]="isDragOver"
+  >
+    <form class="dropzone" (click)="fileInput.click()">
+      <p>Drag & Drop Images</p>
+      <input 
+        type="file" 
+        #fileInput 
+        (change)="onFileSelected($event)" 
+        multiple 
+        accept="image/png, image/jpeg, image/jpg" 
+        hidden
+      />
+    </form>
+  </div>
+
+  <div class="accept-drag-file">
+    <p>Accept File Type: jpg, jpeg, png</p>
+  </div>
+
+  <div class="preview-images mt-3 d-flex flex-wrap gap-2">
+    <img 
+      *ngFor="let img of imagePreviews" 
+      [src]="img" 
+      width="100" 
+      class="rounded border"
+    />
+  </div>
+</div>
+
+
+          <div class="submit-ticket">
+            <button class="btn btn-primary" (click)="modeFormulaire === 'modification' ? updateOffre() : createOffre()">
+  {{ modeFormulaire === 'modification' ? 'Mettre à jour' : 'Enregistrer' }}
+</button>
+            <button class="btn btn-dark" (click)="annuler()">Annuler</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<app-footer></app-footer>
+
+

@@ -1,0 +1,113 @@
+<app-navbar3></app-navbar3>
+
+
+			<!-- Search -->
+							<div class="card search-widget blog-search blog-widget">
+								<div class="card-body">
+									<form class="search-form">
+										<div class="input-group">
+											<input type="text" placeholder="Search..." class="form-control">
+											<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+										</div>
+									</form>
+								</div>
+							</div>
+							<!-- /Search -->
+			
+			<!-- Course -->
+			<section class="course-content">
+				<div class="container">
+					<div class="row">
+						<div class="col-12 d-flex flex-column align-items-center">
+
+							<!-- Blog Post -->
+							<div class="blog bg-white" *ngFor="let offre of offres">
+  <div class="blog-image d-flex justify-content-center mb-2" (click)="openLightbox(offre)">
+    <img 
+      class="img-fluid cursor-pointer"
+      [src]="offre.imageUrls[0]"
+      alt="Image principale"
+      style="max-width: auto; height: 300px; border-radius: 10px;"
+    />
+  </div>
+
+
+  <div class="blog-info clearfix">
+    <div class="post-left">
+      <ul>
+        <li>
+          <img class="img-fluid" src="assets/img/icon/teacher.svg" alt="">
+          {{ offre.universite }}
+        </li>
+        <li>
+          <img class="img-fluid" src="assets/img/icon/icon-22.svg" alt="">
+          <strong>de </strong>&nbsp;{{ offre.dateDebut }}
+        </li>
+        <li>
+          <img class="img-fluid" src="assets/img/icon/icon-22.svg" alt="">
+          <strong>à </strong>&nbsp;{{ offre.dateFin }}
+        </li>
+        <li>
+          <img class="img-fluid" src="assets/img/icon/icon-23.svg" alt="">
+          {{ offre.type }}
+        </li>
+        <li>
+          <img class="img-fluid" src="assets/img/icon/icon-20.svg" alt="">
+          {{ offre.pays }}
+        </li>
+        <li>
+          <img class="img-fluid" src="assets/img/icon/people.svg" alt="">
+          {{ offre.nombrePlaces }}&nbsp;<strong>places</strong>
+        </li>
+        <li>
+  <img class="img-fluid" src="assets/img/icon/icon-23.svg" alt="">
+  <span 
+    class="badge"
+    [ngClass]="offre.active ? 'bg-success text-white' : 'bg-danger text-white'"
+    style="font-size: 0.9rem; padding: 5px 10px;">
+    {{ offre.active ? 'Active' : 'Inactive' }}
+  </span>
+</li>
+
+      </ul>
+    </div>
+    <div class="post-left mt-3">
+  <ul>
+    <li>
+      <img class="img-fluid" src="assets/img/icon/award-new.svg" alt="">
+      <strong>Options concernées :</strong>&nbsp;
+      <span *ngFor="let opt of offre.optionsConcernees; let last = last">
+        {{ opt }}<span *ngIf="!last">, </span>
+      </span>
+    </li>
+  </ul>
+</div>
+<div class="post-left mt-3">
+  <ul>
+    <li>
+      <img class="img-fluid" src="assets/img/icon/chapter.svg" alt="">
+      <strong>Domaines d’études disponibles :</strong>&nbsp;
+      <span *ngFor="let field of offre.fieldsDisponibles; let last = last">
+        {{ field }}<span *ngIf="!last">, </span>
+      </span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <h3 class="blog-title">{{ offre.titre }}</h3>
+  <div class="blog-content blog-read">
+    <p>{{ offre.description }}</p>
+  </div>
+</div>
+							<!-- /Blog Post -->
+						</div>
+						
+						<!-- Blog Sidebar -->
+						
+						<!-- /Blog Sidebar -->
+						
+					</div>
+				</div>
+			</section>
+
+<app-footer></app-footer>

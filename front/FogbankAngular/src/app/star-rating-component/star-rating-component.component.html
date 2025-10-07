@@ -1,0 +1,15 @@
+<!-- src/app/components/star-rating/star-rating.component.html -->
+<div class="star-rating">
+  <label class="form-label">{{ label }}</label>
+  <div class="stars">
+    <span 
+      *ngFor="let star of stars" 
+      (click)="setRating(star)"
+      [class.filled]="star <= rating"
+      [class.disabled]="disabled"
+      class="star">
+      ⭐
+    </span>
+  </div>
+  <small class="text-muted">{{ rating }}/5</small>
+</div>

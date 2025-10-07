@@ -1,0 +1,429 @@
+<app-navbar2></app-navbar2>
+
+
+			<!-- Search -->
+							<div class="card search-widget blog-search blog-widget">
+								<div class="card-body">
+									<form class="search-form">
+										<div class="input-group">
+											<input type="text" placeholder="Search..." class="form-control">
+											<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+										</div>
+									</form>
+								</div>
+							</div>
+							<!-- /Search -->
+			
+			<!-- Course -->
+			<section class="course-content" *ngIf="!selectedOffre">
+				<div class="container">
+					<div class="row">
+						<div class="col-12 d-flex flex-column align-items-center">
+
+							<!-- Blog Post -->
+							<div class="blog bg-white" *ngFor="let offre of offres">
+  <div class="blog-image d-flex justify-content-center mb-2" (click)="openLightbox(offre)">
+    <img 
+      class="img-fluid cursor-pointer"
+      [src]="offre.imageUrls[0]"
+      alt="Image principale"
+      style="max-width: auto; height: 300px; border-radius: 10px;"
+    />
+  </div>
+
+
+  <div class="blog-info clearfix">
+    <div class="post-left">
+      <ul>
+        <li>
+          <img class="img-fluid" src="assets/img/icon/teacher.svg" alt="">
+          {{ offre.universite }}
+        </li>
+        <li>
+          <img class="img-fluid" src="assets/img/icon/icon-22.svg" alt="">
+          <strong>de </strong>&nbsp;{{ offre.dateDebut }}
+        </li>
+        <li>
+          <img class="img-fluid" src="assets/img/icon/icon-22.svg" alt="">
+          <strong>à </strong>&nbsp;{{ offre.dateFin }}
+        </li>
+        <li>
+          <img class="img-fluid" src="assets/img/icon/icon-23.svg" alt="">
+          {{ offre.type }}
+        </li>
+        <li>
+          <img class="img-fluid" src="assets/img/icon/icon-20.svg" alt="">
+          {{ offre.pays }}
+        </li>
+        <li>
+          <img class="img-fluid" src="assets/img/icon/people.svg" alt="">
+          {{ offre.nombrePlaces }}&nbsp;<strong>places</strong>
+        </li>
+        <li>
+  <img class="img-fluid" src="assets/img/icon/icon-23.svg" alt="">
+  <span 
+    class="badge"
+    [ngClass]="offre.active ? 'bg-success text-white' : 'bg-danger text-white'"
+    style="font-size: 0.9rem; padding: 5px 10px;">
+    {{ offre.active ? 'Active' : 'Inactive' }}
+  </span>
+</li>
+
+      </ul>
+    </div>
+    <div class="post-left mt-3">
+  <ul>
+    <li>
+      <img class="img-fluid" src="assets/img/icon/award-new.svg" alt="">
+      <strong>Options concernées :</strong>&nbsp;
+      <span *ngFor="let opt of offre.optionsConcernees; let last = last">
+        {{ opt }}<span *ngIf="!last">, </span>
+      </span>
+    </li>
+  </ul>
+</div>
+<div class="post-left mt-3">
+  <ul>
+    <li>
+      <img class="img-fluid" src="assets/img/icon/chapter.svg" alt="">
+      <strong>Domaines d’études disponibles :</strong>&nbsp;
+      <span *ngFor="let field of offre.fieldsDisponibles; let last = last">
+        {{ field }}<span *ngIf="!last">, </span>
+      </span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <h3 class="blog-title">{{ offre.titre }}</h3>
+  <div class="blog-content blog-read">
+    <p>{{ offre.description }}</p>
+  </div>
+  <div class="blog-content blog-read">
+									
+									<button class="read-more btn btn-primary" (click)="startCandidature(offre)">Soumettre une candidature</button>
+								</div>
+</div>
+							<!-- /Blog Post -->
+						</div>
+						
+						<!-- Blog Sidebar -->
+						
+						<!-- /Blog Sidebar -->
+						
+					</div>
+				</div>
+			</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- New Course -->
+			<section class="page-content course-sec" *ngIf="selectedOffre">
+				<div class="container">
+					<div class="row align-items-center">
+						<div class="col-md-12">
+							<div class="add-course-header">
+								<h2>Nouvelle Candidature</h2>
+								<div class="add-course-btns">
+									<ul class="nav">
+										<li>
+											<a href="javascript:void(0);" class="btn btn-black" (click)="selectedOffre = null">Retour aux Opportunités</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);" class="btn btn-success-dark" (click)="submitCandidature()">Soumettre la candidature</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+
+								<!-- Course Wizard -->
+								<div class="widget-set">
+									<div class="widget-setcount">
+										<ul id="progressbar">
+  <li [class.progress-active]="currentStep === 0">
+    <p><span></span> Informations personnelles</p>											
+  </li>
+  <li [class.progress-active]="currentStep === 1">
+    <p><span></span> Documents requis</p>
+  </li>
+  <li [class.progress-active]="currentStep === 2">
+    <p><span></span> Informations académiques</p>												
+  </li>
+  <li [class.progress-active]="currentStep === 3">
+    <p><span></span> Vos moyennes par année</p>												
+  </li>
+</ul>
+									</div>
+									<div class="widget-content multistep-form">
+										<fieldset class="active-step">
+  <div class="add-course-info">
+    <div class="add-course-inner-header">
+      <h4>Informations personnelles</h4>
+    </div>
+    <div class="add-course-form">
+      <form>
+        <div class="input-block">
+          <label class="add-course-label">Nom</label>
+          <input type="text" class="form-control" [(ngModel)]="candidature.nom" name="nom">
+        </div>
+
+        <div class="input-block">
+          <label class="add-course-label">Prénom</label>
+          <input type="text" class="form-control" [(ngModel)]="candidature.prenom" name="prenom">
+        </div>
+
+        <div class="input-block">
+          <label class="add-course-label">ID Esprit</label>
+          <input type="text" class="form-control" [(ngModel)]="candidature.idEsprit" name="idEsprit">
+        </div>
+
+        <div class="input-block">
+          <label class="add-course-label">Téléphone</label>
+          <input type="text" class="form-control" [(ngModel)]="candidature.phone" name="phone">
+        </div>
+
+        <div class="input-block">
+          <label class="add-course-label">Email Principal</label>
+          <input type="email" class="form-control" [(ngModel)]="candidature.email" name="email">
+        </div>
+
+        <div class="input-block">
+          <label class="add-course-label">Email Esprit</label>
+          <input type="email" class="form-control" [(ngModel)]="candidature.emailesprit" name="emailesprit">
+        </div>
+
+        <div class="input-block">
+          <label class="add-course-label">Email Personnel</label>
+          <input type="email" class="form-control" [(ngModel)]="candidature.emailpersonel" name="emailpersonel">
+        </div>
+      </form>
+    </div>
+
+    <div class="widget-btn">
+      <a class="btn btn-black" (click)="previousStep()">Précédent</a>
+      <a class="btn btn-info-light next_btn" (click)="nextStep()">Suivant</a>
+    </div>
+  </div>
+</fieldset>
+
+										<fieldset class="field-card">
+											<div class="add-course-info">
+												<div class="add-course-inner-header">
+													<h4>Documents requis</h4>
+												</div>
+												<div class="add-course-form">
+													<form action="#">
+
+														<div class="input-block">
+  <label class="add-course-label">Télécharger votre CV (PDF)</label>
+  <div class="relative-form">
+    <span>{{ cvFile ? cvFile.name : 'Aucun fichier sélectionné' }}</span>
+    <label class="relative-file-upload">
+      Choisir un fichier <input type="file" (change)="onFileSelected($event, 'cv')" accept=".pdf">
+    </label>
+  </div>
+</div>
+														<div class="input-block">
+															<div class="add-image-box">
+																<a href="javascript:void(0);">
+																	<i class="far fa-image"></i>
+																</a>
+															</div>
+														</div>
+
+														<div class="input-block">
+  <label class="add-course-label">Télécharger votre lettre de motivation (PDF)</label>
+  <div class="relative-form">
+    <span>{{ lettreMotivationFile ? lettreMotivationFile.name : 'Aucun fichier sélectionné' }}</span>
+    <label class="relative-file-upload">
+      Choisir un fichier <input type="file" (change)="onFileSelected($event, 'lettreMotivation')" accept=".pdf">
+    </label>
+  </div>
+</div>
+
+														<div class="input-block">
+															<div class="add-image-box">
+																<a href="javascript:void(0);">
+																	<i class="far fa-image"></i>
+																</a>
+															</div>
+														</div>
+
+														<div class="input-block">
+  <label class="add-course-label">Autres documents (certificats, diplômes...)</label>
+  <div class="relative-form">
+    <span>{{ autreDocsFile ? autreDocsFile.name : 'Aucun fichier sélectionné' }}</span>
+    <label class="relative-file-upload">
+      Choisir un fichier <input type="file" (change)="onFileSelected($event, 'autreDocs')" accept=".pdf">
+    </label>
+  </div>
+</div>
+
+														<div class="input-block">
+															<div class="add-image-box">
+																<a href="javascript:void(0);">
+																	<i class="far fa-image"></i>
+																</a>
+															</div>
+														</div>
+														
+													</form>
+												</div>
+												<div class="widget-btn">
+													<a class="btn btn-black" (click)="previousStep()">Précédent</a>
+													<a class="btn btn-info-light next_btn" (click)="nextStep()">Suivant</a>
+												</div>
+											</div>
+										</fieldset>
+										<fieldset class="field-card">
+  <div class="add-course-info">
+    <div class="add-course-inner-header">
+      <h4>Informations académiques</h4>
+    </div>
+
+    <div class="add-course-form">
+      <!-- Année d’étude -->
+      <div class="input-block">
+        <label class="add-course-label">Année d’étude actuelle</label>
+        <select class="form-control" [(ngModel)]="candidature.anneeActuelle" name="anneeActuelle">
+          <option *ngFor="let annee of AnneeEtude" [value]="annee">{{ annee }}</option>
+        </select>
+      </div>
+
+      <!-- Option actuelle -->
+      <div class="input-block">
+        <label class="add-course-label">Option actuelle</label>
+        <select class="form-control" [(ngModel)]="candidature.optionActuelle" name="optionActuelle">
+          <option *ngFor="let opt of OptionEtude" [value]="opt">{{ opt }}</option>
+        </select>
+      </div>
+
+      <!-- A des crédits (switch) -->
+      <div class="input-block">
+        <label class="add-course-label">Crédits non validés</label>
+        <div class="form-check form-switch check-on d-flex align-items-center gap-2">
+          <input 
+            class="form-check-input" 
+            type="checkbox" 
+            id="creditSwitch" 
+            [(ngModel)]="candidature.creditsNonValides"
+            name="aDesCredits">
+          <label class="form-check-label" for="creditSwitch" style="margin-left: 10px;">
+            {{ candidature.creditsNonValides ? 'Oui' : 'Non' }}
+          </label>
+        </div>
+      </div>
+
+      <!-- Niveau de langue -->
+      <div class="input-block">
+        <label class="add-course-label">Statut de langue (B2)</label>
+        <select class="form-control" [(ngModel)]="candidature.niveauLangue" name="niveauLangue">
+          <option *ngFor="let lang of LangueStatus" [value]="lang">{{ lang }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="widget-btn">
+      <a class="btn btn-black" (click)="previousStep()">Précédent</a>
+      <a class="btn btn-info-light next_btn" (click)="nextStep()">Suivant</a>
+    </div>
+  </div>
+</fieldset>
+
+										<fieldset class="field-card">
+  <div class="add-course-info">
+    <div class="add-course-inner-header">
+      <h4>Vos moyennes par année</h4>
+    </div>
+
+    <div class="add-course-form">
+      <form action="#">
+        <!-- Moyenne 1ère année -->
+        <div class="input-block">
+          <label class="add-course-label">Moyenne 1ère année</label>
+          <input type="number" class="form-control" [(ngModel)]="candidature.moyenne1A" name="moyenne1A" step="0.01" min="0" max="20">
+        </div>
+
+        <!-- Moyenne 2ème année -->
+        <div class="input-block">
+          <label class="add-course-label">Moyenne 2ème année</label>
+          <input type="number" class="form-control" [(ngModel)]="candidature.moyenne2A" name="moyenne2A" step="0.01" min="0" max="20">
+        </div>
+
+        <!-- Moyenne 3ème année -->
+        <div class="input-block">
+          <label class="add-course-label">Moyenne 3ème année</label>
+          <input type="number" class="form-control" [(ngModel)]="candidature.moyenne3A" name="moyenne3A" step="0.01" min="0" max="20">
+        </div>
+
+        <!-- Moyenne 4ème année -->
+        <div class="input-block">
+          <label class="add-course-label">Moyenne 4ème année</label>
+          <input type="number" class="form-control" [(ngModel)]="candidature.moyenne4A" name="moyenne4A" step="0.01" min="0" max="20">
+        </div>
+
+        <!-- Moyenne 5ème année -->
+        <div class="input-block">
+          <label class="add-course-label">Moyenne 5ème année</label>
+          <input type="number" class="form-control" [(ngModel)]="candidature.moyenne5A" name="moyenne5A" step="0.01" min="0" max="20">
+        </div>
+      </form>
+    </div>
+
+    <div class="widget-btn">
+      <a class="btn btn-black" (click)="previousStep()">Précédent</a>
+      <a class="btn btn-info-light next_btn" (click)="nextStep()">Suivant</a>
+    </div>
+  </div>
+
+
+										</fieldset>
+										<fieldset class="field-card">
+  <div class="add-course-info">
+    <div class="add-course-msg">
+      <i class="fas fa-circle-check text-success" style="font-size: 48px;"></i>
+      <h4>Vos informations ont été saisies avec succès</h4>
+      <p>Vous pouvez maintenant soumettre votre candidature en cliquant sur le bouton ci-dessus.</p>
+    </div>
+
+    <div class="widget-btn d-flex justify-content-between mt-4">
+      <a class="btn btn-black" (click)="previousStep()">Précédent</a>
+    </div>
+  </div>
+</fieldset>
+
+									</div>
+								</div>
+								<!-- /Course Wizard -->
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- /New Course -->
+
+<app-footer></app-footer>

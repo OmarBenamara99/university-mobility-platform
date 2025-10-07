@@ -1,0 +1,109 @@
+<div class="settings-widget dash-profile">
+  <div class="settings-menu p-0">
+    <div class="profile-bg">
+      <h5>Beginner</h5>
+      <img src="assets/img/instructor-profile-bg.jpg" alt="" />
+      <div class="profile-img">
+        <a href="instructor-profile.html">
+          <img
+            [src]="userPhotoUrl || 'assets/img/instructor/profile-avatar.jpg'"
+            alt=""
+          />
+        </a>
+      </div>
+    </div>
+    <div class="profile-group">
+      <div class="profile-name text-center">
+        <h4>
+          <a href="instructor-profile.html"
+            >{{ currentUser.firstname }} {{ currentUser.lastname }}</a
+          >
+        </h4>
+        <p>{{ currentUser.role }}</p>
+      </div>
+
+      <div class="go-dashboard text-center">
+        <!-- article btn  -->
+        <!-- <ng-container *ngIf="router.url === '/admin/allarticle'">
+            <a [routerLink]="['/admin/addArticle']" class="btn btn-primary"
+              >Create New Article</a
+            >
+          </ng-container>
+          <ng-container *ngIf="router.url === '/admin/addArticle'">
+            <a [routerLink]="['/admin/allarticle']" class="btn btn-primary"
+              >Articles</a
+            >
+          </ng-container>
+          <ng-container *ngIf="router.url === '/admin/updateArticle/:id'">
+            <a [routerLink]="['/admin/allarticle']" class="btn btn-primary"
+              >Articles</a
+            >
+          </ng-container>
+           END article btn  
+  
+          
+          <ng-container *ngIf="router.url === '/admin/addEvent'">
+            <a href="add-course.html" class="btn btn-primary">Create New Event</a>
+          </ng-container>
+  
+          <ng-container *ngIf="router.url === '/admin/events'">
+          </ng-container> -->
+
+        <a [routerLink]="buttonLink" class="btn btn-primary">{{
+          buttonName
+        }}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="settings-widget account-settings">
+  <div class="settings-menu">
+    <h3>DASHBOARD</h3>
+    <ul>
+      <li class="nav-item" routerLinkActive="active">
+        <a [routerLink]="['/admin/dahboard']" class="nav-link">
+          <i class="feather-home"></i> My Dashboard
+        </a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a [routerLink]="['/admin/allarticle']" class="nav-link">
+          <i class="feather-book"></i> Articles
+        </a>
+      </li>
+
+      <li class="nav-item" routerLinkActive="active">
+        <a [routerLink]="['/admin/usersgrid']" class="nav-link">
+          <i class="feather-users"></i> Users
+        </a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a [routerLink]="['/admin/events']" class="nav-link">
+          <i class="feather-calendar"></i> Events
+        </a>
+      </li>
+    </ul>
+    <div class="instructor-title">
+      <h3>ACCOUNT SETTINGS</h3>
+    </div>
+    <ul>
+      <li class="nav-item">
+        <a [routerLink]="['/admin/edit']" class="nav-link">
+          <i class="feather-settings"></i> Edit Profile
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="instructor-delete-profile.html" class="nav-link">
+          <i class="feather-trash-2"></i> Delete Profile
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" (click)="logOut()">
+          <i class="feather-power"></i> Sign Out
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

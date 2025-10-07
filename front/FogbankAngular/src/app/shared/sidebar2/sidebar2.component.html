@@ -1,0 +1,120 @@
+
+<div class="settings-widget dash-profile">
+  <div class="settings-menu p-0">
+    <div class="profile-bg">
+      
+      <img src="assets/img/instructor-profile-bg.jpg" alt="">
+      <div class="profile-img">
+        <a href="instructor-profile.html">
+          <img [src]="userPhotoUrl || 'assets/img/instructor/profile-avatar.jpg'" alt="">
+        </a>
+      </div>
+    </div>
+    <div class="profile-group">
+      <div class="profile-name text-center">
+        <h4><a href="instructor-profile.html">{{ currentUser.firstname }} {{ currentUser.lastname }}</a></h4>
+        <p>{{ currentUser.role }}</p>
+      </div>
+
+
+      <div class="go-dashboard text-center">
+        <ng-container *ngIf="router.url === '/admin/allarticle'">
+          <a [routerLink]="['/admin/articleadd']"  class="btn btn-primary">Create New Article</a>
+        </ng-container>
+        <ng-container *ngIf="router.url === '/admin/usersgrid'">
+          <!-- Mettez le contenu pour '/admin/allarticle' ici -->
+        </ng-container>
+        <ng-container *ngIf="router.url === '/admin/events'">
+          <a href="add-course.html" class="btn btn-primary">Create New Event</a>
+
+          <!-- Mettez le contenu pour '/admin/usersgrid' ici -->
+        </ng-container>
+        <ng-container *ngIf="router.url === '/admin/events'">
+          <!-- Mettez le contenu pour '/admin/events' ici -->
+        </ng-container>
+      </div>
+
+
+
+    </div>
+  </div>
+</div>
+
+<div class="settings-widget account-settings">
+  <div class="settings-menu">
+    <h3>ESPACE ADMINISTRATEUR</h3>
+    <ul>
+      <li class="nav-item " routerLinkActive="active">
+        <a [routerLink]="['/admin/offer']" class="nav-link">
+          <i class="feather-home"></i> Gestion des Opportunités
+        </a>
+      </li>
+      <li class="nav-item " routerLinkActive="active">
+        <a [routerLink]="['/admin/candidature']" class="nav-link">
+          <i class="feather-award"></i> Candidatures
+        </a>
+      </li>
+      <li class="nav-item " routerLinkActive="active">
+        <a [routerLink]="['/admin/reguladmin']" class="nav-link">
+          <i class="feather-file"></i> Régularisation Administrative
+        </a>
+      </li>
+      <li class="nav-item " routerLinkActive="active">
+        <a [routerLink]="['/admin/justifacc']" class="nav-link">
+          <i class="feather-edit"></i> Justificatif d'acceptation
+        </a>
+      </li>
+      <li class="nav-item " routerLinkActive="active">
+        <a [routerLink]="['/admin/ordmis']" class="nav-link">
+          <i class="feather-globe"></i> Ordre de Mission
+        </a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a [routerLink]="['/admin/fb']" class="nav-link">
+          <i class="feather-users"></i> Retours d’Expérience
+        </a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a [routerLink]="['/admin/eq']" class="nav-link">
+          <i class="feather-mail"></i> Équivalences Académiques
+        </a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a [routerLink]="['/admin/reclam']" class="nav-link">
+          <i class="feather-calendar"></i> Réclamations
+        </a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a [routerLink]="['/admin/ext']" class="nav-link">
+          <i class="feather-inbox"></i> Gérer Demandes Extension
+        </a>
+      </li>
+
+    </ul>
+    <div class="instructor-title">
+      <h3>PARAMÈTRES DU COMPTE</h3>
+    </div>
+    <ul>
+      <li class="nav-item">
+
+
+        <a [routerLink]="['/admin/edit']" class="nav-link ">
+          <i class="feather-settings"></i> Modifier le Profil
+        </a>
+      </li>
+
+
+      <li class="nav-item">
+        <a href="instructor-delete-profile.html" class="nav-link">
+          <i class="feather-trash-2"></i> Supprimer le Compte
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" (click)="logOut()">
+          <i class="feather-power"></i> Se Déconnecter
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

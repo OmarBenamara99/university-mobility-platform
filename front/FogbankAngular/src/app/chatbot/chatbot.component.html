@@ -1,0 +1,84 @@
+<!-- src/app/components/chatbot/chatbot.component.html -->
+<div class="chat-container" [class.open]="isChatOpen">
+  
+  <!-- Chat Header -->
+  <div class="chat-header">
+    <div class="header-content">
+      <div class="bot-info">
+        <div class="bot-avatar">🤖</div>
+        <div class="bot-details">
+          <h3>ESPRIT Mobility Assistant</h3>
+          <span class="status">Online</span>
+        </div>
+      </div>
+      <button class="close-btn" (click)="toggleChat()">×</button>
+    </div>
+  </div>
+
+  <!-- Chat Messages -->
+  <div class="chat-messages">
+    <div *ngFor="let message of messages" 
+     [class.user-message]="message.isUser"
+     [class.bot-message]="!message.isUser"
+     class="message">
+  
+  <div class="message-avatar" *ngIf="!message.isUser">🤖</div>
+  
+  <div class="message-content">
+    <div class="message-text">{{ message.text }}</div>
+    <div class="message-time">
+      {{ message.timestamp | date:'HH:mm' }}
+    </div>
+  </div>
+
+  <div class="message-avatar" *ngIf="message.isUser">👤</div>
+</div>
+
+    <!-- Loading Indicator -->
+    <div *ngIf="isLoading" class="loading-indicator">
+      <div class="typing-animation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <span>Mobility Assistant is thinking...</span>
+    </div>
+  </div>
+
+  <!-- Quick Questions -->
+  <div class="quick-questions" *ngIf="messages.length <= 1">
+    <h4>Quick Questions:</h4>
+    <div class="question-buttons">
+      <button *ngFor="let question of quickQuestions" 
+              (click)="askQuickQuestion(question)"
+              class="question-btn">
+        {{ question }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Chat Input -->
+  <div class="chat-input-container">
+    <div class="input-wrapper">
+      <input 
+        type="text" 
+        [(ngModel)]="userInput" 
+        (keyup.enter)="sendMessage()"
+        placeholder="Ask about mobility programs, visas, partner universities..."
+        [disabled]="isLoading"
+        #messageInput>
+      <button 
+        (click)="sendMessage()" 
+        [disabled]="isLoading || !userInput.trim()"
+        class="send-btn">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Chat Toggle Button -->
+<button class="chat-toggle-btn" (click)="toggleChat()" [class.hidden]="isChatOpen">
+  <i class="fas fa-comments"></i>
+  Mobility Help
+</button>

@@ -1,0 +1,206 @@
+<app-navbar2></app-navbar2>
+<app-student-header></app-student-header>
+
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+      
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">
+            <i class="fas fa-info-circle me-2"></i>
+            Informations Pratiques - {{ userOffer?.universite }}
+          </h4>
+        </div>
+        
+        <div class="card-body">
+          
+          <!-- Loading state -->
+          <div *ngIf="loading" class="text-center p-4">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="mt-2">Chargement des informations...</p>
+          </div>
+
+          <!-- Error state -->
+          <div *ngIf="error && !loading" class="alert alert-warning text-center">
+            {{ error }}
+          </div>
+
+          <!-- SORBONNE Information -->
+          <div *ngIf="userOffer?.universite === 'SORBONNE' && !loading">
+            
+            <div class="text-center mb-4">
+              <h3 class="text-primary">Université Sorbonne</h3>
+              <p class="text-muted">Paris, France</p>
+              <p class="badge bg-success">{{ userOffer?.type }}</p>
+            </div>
+
+            <div class="row">
+              
+              <!-- Visa Information for SORBONNE -->
+              <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                  <div class="card-header bg-light">
+                    <h5 class="mb-0">
+                      <i class="fas fa-passport me-2 text-primary"></i>
+                      Visa et Documents - France
+                    </h5>
+                  </div>
+                  <div class="card-body">
+                    <ul class="list-unstyled">
+                      <li class="mb-2"><strong>Type de visa:</strong> Visa long séjour étudiant</li>
+                      <li class="mb-2"><strong>Documents requis:</strong></li>
+                      <ul>
+                        <li>Passeport valide + copies</li>
+                        <li>Attestation d'inscription à la Sorbonne</li>
+                        <li>Justificatifs de ressources (615€/mois)</li>
+                        <li>Assurance maladie</li>
+                        <li>Photos d'identité</li>
+                      </ul>
+                      <li class="mb-2"><strong>Délai:</strong> 2-3 semaines</li>
+                      <li class="mb-2"><strong>Coût:</strong> 50€</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Logement SORBONNE -->
+              <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                  <div class="card-header bg-light">
+                    <h5 class="mb-0">
+                      <i class="fas fa-hotel me-2 text-primary"></i>
+                      Logement - Paris
+                    </h5>
+                  </div>
+                  <div class="card-body">
+                    <ul class="list-unstyled">
+                      <li class="mb-2"><strong>Résidence universitaire:</strong> Cité Internationale</li>
+                      <li class="mb-2"><strong>Prix:</strong> 400-600€/mois</li>
+                      <li class="mb-2"><strong>Contact:</strong> logement@sorbonne.fr</li>
+                      <li class="mb-2"><strong>Démarches:</strong> Inscription via DSE</li>
+                      <li class="mb-2"><strong>À prévoir:</strong> Caution 1 mois + premier loyer</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Transport SORBONNE -->
+              <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                  <div class="card-header bg-light">
+                    <h5 class="mb-0">
+                      <i class="fas fa-plane me-2 text-primary"></i>
+                      Transport
+                    </h5>
+                  </div>
+                  <div class="card-body">
+                    <ul class="list-unstyled">
+                      <li class="mb-2"><strong>Aéroport:</strong> CDG ou Orly</li>
+                      <li class="mb-2"><strong>Navette:</strong> RER B depuis CDG</li>
+                      <li class="mb-2"><strong>Transport local:</strong> Navigo 75€/mois</li>
+                      <li class="mb-2"><strong>Vélo:</strong> Vélib' disponible</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Santé SORBONNE -->
+              <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                  <div class="card-header bg-light">
+                    <h5 class="mb-0">
+                      <i class="fas fa-heartbeat me-2 text-primary"></i>
+                      Santé et Assurance
+                    </h5>
+                  </div>
+                  <div class="card-body">
+                    <ul class="list-unstyled">
+                      <li class="mb-2"><strong>Sécurité sociale:</strong> Obligatoire</li>
+                      <li class="mb-2"><strong>Coût:</strong> 215€/an</li>
+                      <li class="mb-2"><strong>Médecin campus:</strong> Centre de santé étudiant</li>
+                      <li class="mb-2"><strong>Urgences:</strong> 15 (SAMU)</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Contacts SORBONNE -->
+            <div class="card mb-4">
+              <div class="card-header bg-light">
+                <h5 class="mb-0">
+                  <i class="fas fa-address-book me-2 text-primary"></i>
+                  Contacts Importants - Sorbonne
+                </h5>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <p><strong>Bureau international:</strong> international@sorbonne.fr</p>
+                    <p><strong>Coordinateur mobilité:</strong> M. Dupont - +33 1 44 27 30 00</p>
+                  </div>
+                  <div class="col-md-6">
+                    <p><strong>Urgences administratives:</strong> urgent@sorbonne.fr</p>
+                    <p><strong>Assistance 24/7:</strong> +33 1 44 27 30 99</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- MCGILL Information -->
+          <div *ngIf="userOffer?.universite === 'MCGILL' && !loading">
+            
+            <div class="text-center mb-4">
+              <h3 class="text-primary">McGill University</h3>
+              <p class="text-muted">Montreal, Canada</p>
+              <p class="badge bg-success">{{ userOffer?.type }}</p>
+            </div>
+
+            <div class="alert alert-info">
+              <strong>Information pour McGill:</strong> Les informations détaillées seront disponibles bientôt.
+            </div>
+
+          </div>
+
+          <!-- PARIS_SACLAY Information -->
+          <div *ngIf="userOffer?.universite === 'PARIS_SACLAY' && !loading">
+            
+            <div class="text-center mb-4">
+              <h3 class="text-primary">Université Paris-Saclay</h3>
+              <p class="text-muted">Paris, France</p>
+              <p class="badge bg-success">{{ userOffer?.type }}</p>
+            </div>
+
+            <div class="alert alert-info">
+              <strong>Information pour Paris-Saclay:</strong> Les informations détaillées seront disponibles bientôt.
+            </div>
+
+          </div>
+
+          <!-- POLITECNICO_DI_MILANO Information -->
+          <div *ngIf="userOffer?.universite === 'POLITECNICO_DI_MILANO' && !loading">
+            
+            <div class="text-center mb-4">
+              <h3 class="text-primary">Politecnico di Milano</h3>
+              <p class="text-muted">Milan, Italie</p>
+              <p class="badge bg-success">{{ userOffer?.type }}</p>
+            </div>
+
+            <div class="alert alert-info">
+              <strong>Information pour Politecnico di Milano:</strong> Les informations détaillées seront disponibles bientôt.
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

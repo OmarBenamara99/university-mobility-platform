@@ -1,0 +1,640 @@
+<app-navbar2></app-navbar2>
+
+
+
+
+
+<app-student-header></app-student-header>
+
+
+
+
+
+
+
+            <!-- Course Lesson -->
+			<section class="page-content course-sec course-lesson">
+				<div class="container">
+				
+					<div class="row">
+						<div class="col-lg-4">
+							
+							<!-- Course Lesson -->
+							<div class="lesson-group">
+								<div class="course-card">
+									<h6 class="cou-title">
+  <a 
+    class="collapsed"
+    href="javascript:void(0);"
+    (click)="toggleContent('avantMobilite')">
+    Avant la mobilité <span>5 étapes</span>
+  </a>
+</h6>
+									<div 
+  id="collapseOne"
+  class="card-collapse"
+  [class.collapse]="activeSection !== 'avantMobilite'"
+  [class.show]="activeSection === 'avantMobilite'">
+										<div class="progress-stip">
+											<div class="progress-bar bg-success progress-bar-striped active-stip"></div>
+										</div>
+										<div class="student-percent lesson-percent">
+											<p>10hrs<span>50%</span></p>
+										</div>
+										<ul>
+											<li (click)="goTo('student/candidature')" style="cursor: pointer;">
+                                            <!--<p class="play-intro">Dépôt de candidature</p>-->
+                                            <p>Dépôt de candidature</p>
+                                            </li>
+											<li (click)="goTo('student/candidaturestat')" style="cursor: pointer;">
+												<p>Attente de la décision </p>
+												
+											</li>
+											<li (click)="goTo('student/conpart')" style="cursor: pointer;">
+												<p>Confirmation de participation</p>
+												
+											</li>
+											<li (click)="goTo('student/reguladmin')" style="cursor: pointer;">
+												<p>Régularisation administrative</p>
+												
+											</li>
+											<li (click)="goTo('student/justifacc')" style="cursor: pointer;">
+												<p>Justificatif d’acceptation</p>
+												
+											</li>
+											
+										</ul>
+									</div>
+								</div>
+								<div class="course-card">
+  <h6 class="cou-title">
+    <a 
+      class="collapsed"
+      href="javascript:void(0);"
+      (click)="toggleContent('preparationDepart')"
+      [class.text-muted]="!hasMobilityAccess && !loading">
+      Préparation du départ 
+      <span *ngIf="loading"><i class="fas fa-spinner fa-spin"></i></span>
+      <span *ngIf="!loading">3 sections</span>
+    </a>
+  </h6>
+  <div 
+    id="course2"
+    class="card-collapse"
+    [class.collapse]="activeSection !== 'preparationDepart'"
+    [class.show]="activeSection === 'preparationDepart'">
+    
+    <div *ngIf="loading" class="text-center p-2">
+      <i class="fas fa-spinner fa-spin"></i> Vérification d'accès...
+    </div>
+    
+    <div *ngIf="!loading && !hasMobilityAccess" class="alert alert-warning m-2">
+      <small>Completez la validation pour accéder</small>
+    </div>
+
+    <div *ngIf="hasMobilityAccess">
+      <div class="progress-stip">
+        <div class="progress-bar bg-success progress-bar-striped active-stip"></div>
+      </div>
+      <div class="student-percent lesson-percent">
+        <p>10hrs<span>0%</span></p>
+      </div>
+      <ul>
+        <li (click)="navigateTo('informations-pratiques')" style="cursor: pointer;">
+          <p>Informations Pratiques</p>
+          <div>
+            <!--<img src="assets/img/icon/play-icon.svg" alt="">-->
+          </div>
+        </li>
+        <li (click)="navigateTo('ordre-mission')" style="cursor: pointer;">
+  <p>Ordre de Mission</p>
+  <div>
+    
+  </div>
+</li>
+        <li (click)="navigateTo('forums')" style="cursor: pointer;">
+          <p>Forums & Discussions</p>
+          <div>
+            
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+								<div class="course-card">
+  <h6 class="cou-title">
+    <a 
+      class="collapsed"
+      href="javascript:void(0);"
+      (click)="toggleContent('pendantMobilite')"
+      [class.text-muted]="!hasMobilityAccess && !loading">
+      Pendant la mobilité 
+      <span *ngIf="loading"><i class="fas fa-spinner fa-spin"></i></span>
+      <span *ngIf="!loading">3 sections</span>
+    </a>
+  </h6>
+  <div 
+    id="course3"
+    class="card-collapse"
+    [class.collapse]="activeSection !== 'pendantMobilite'"
+    [class.show]="activeSection === 'pendantMobilite'">
+    
+    <div *ngIf="loading" class="text-center p-2">
+      <i class="fas fa-spinner fa-spin"></i> Vérification d'accès...
+    </div>
+    
+    <div *ngIf="!loading && !hasMobilityAccess" class="alert alert-warning m-2">
+      <small>Vous devez compléter les étapes précédentes pour accéder</small>
+    </div>
+
+    <div *ngIf="hasMobilityAccess">
+      <div class="progress-stip">
+        <div class="progress-bar bg-success progress-bar-striped active-stip"></div>
+      </div>
+      <div class="student-percent lesson-percent">
+        <p>En cours<span>0%</span></p>
+      </div>
+      <ul>
+        <li (click)="goTo('student/fb')" style="cursor: pointer;">
+          <p>Feedback & Évaluation</p>
+          <div>
+            <!--<img src="assets/img/icon/play-icon.svg" alt="">-->
+          </div>
+        </li>
+        <li (click)="goTo('student/reclam')" style="cursor: pointer;">
+          <p>Espace Réclamations</p>
+          <div>
+            <!--<img src="assets/img/icon/play-icon.svg" alt="">-->
+          </div>
+        </li>
+        <li (click)="goTo('student/eq')" style="cursor: pointer;">
+          <p>Gestion des Équivalences</p>
+          <div>
+            <!--<img src="assets/img/icon/play-icon.svg" alt="">-->
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+								<!-- Après la Mobilite Section -->
+<div class="course-card">
+  <h6 class="cou-title">
+    <a 
+      class="collapsed"
+      href="javascript:void(0);"
+      (click)="toggleContent('apresMobilite')"
+      [class.text-muted]="!hasMobilityAccess && !loading">
+      Après la mobilité 
+      <span *ngIf="loading"><i class="fas fa-spinner fa-spin"></i></span>
+      <span *ngIf="!loading">2 sections</span>
+    </a>
+  </h6>
+  <div 
+    id="course4"
+    class="card-collapse"
+    [class.collapse]="activeSection !== 'apresMobilite'"
+    [class.show]="activeSection === 'apresMobilite'">
+    
+    <div *ngIf="loading" class="text-center p-2">
+      <i class="fas fa-spinner fa-spin"></i> Vérification d'accès...
+    </div>
+    
+    <div *ngIf="!loading && !hasMobilityAccess" class="alert alert-warning m-2">
+      <small>Vous devez compléter les étapes précédentes pour accéder</small>
+    </div>
+
+    <div *ngIf="hasMobilityAccess">
+      <div class="progress-stip">
+        <div class="progress-bar bg-success progress-bar-striped active-stip"></div>
+      </div>
+      <div class="student-percent lesson-percent">
+        <p>En cours<span>0%</span></p>
+      </div>
+      <ul>
+        <li (click)="goTo('student/tr')" style="cursor: pointer;">
+          <p>Dépôt des Relevés de Notes</p>
+          <div>
+            <!--<img src="assets/img/icon/play-icon.svg" alt="">-->
+          </div>
+        </li>
+        <li (click)="goTo('student/ext')" style="cursor: pointer;">
+          <p>Demande d'Extension</p>
+          <div>
+            <!--<img src="assets/img/icon/play-icon.svg" alt="">-->
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+								
+							</div>
+							<!-- /Course Lesson -->
+							
+						</div>	
+						<div class="col-lg-8">
+						
+							<!-- Introduction -->
+							<div class="student-widget lesson-introduction" *ngIf="activeSection === 'avantMobilite'">
+  <div class="lesson-widget-group">
+    <h4 class="tittle">Avant la mobilité</h4>
+    <div class="blog-content blog-read">
+      <p>
+        Cette première étape est cruciale pour lancer votre processus de mobilité internationale. Elle se décompose en 5 sous-étapes :
+      </p>
+      <ul>
+        <li><strong>1. Dépôt de candidature :</strong> Remplissez le formulaire en ligne pour postuler à une ou plusieurs opportunités de mobilité proposées.</li>
+        <li><strong>2. Attente de la décision :</strong> Suivez le statut de vos candidatures (en attente, acceptée, refusée).</li>
+        <li><strong>3. Confirmation de participation :</strong> Une fois accepté, confirmez votre choix définitif concernant l'opportunités retenue.</li>
+        <li><strong>4. Régularisation administrative :</strong> Choisissez une méthode de paiement pour votre année d'études (paiement immédiat, fractionné, etc.).</li>
+        <li><strong>5. Justificatif d’acceptation :</strong> Téléversez un document officiel de l’école partenaire prouvant votre admission (lettre d’acceptation, attestation d’inscription...).</li>
+      </ul>
+      <p>
+        Une fois toutes ces étapes validées, vous pourrez passer à la phase suivante : <strong>Préparation du départ</strong>.
+      </p>
+    </div>
+  </div>
+</div>
+
+
+<!-- Preparation du Depart Content -->
+<div class="student-widget lesson-introduction" *ngIf="activeSection === 'preparationDepart'">
+  <div class="lesson-widget-group">
+    <h4 class="tittle">Préparation du départ</h4>
+    <div class="blog-content blog-read">
+      <p>
+  Félicitations ! Votre mobilité est confirmée. Cette étape vous guide dans la préparation de votre départ à l'étranger. Elle comprend trois sections principales :
+</p>
+      
+      <div class="row mt-4">
+        <!-- Informations Pratiques Card -->
+        <div class="col-md-4 mb-3">
+          <div class="card h-100 cursor-pointer" >
+            <div class="card-body text-center">
+              <i class="fas fa-info-circle fa-3x text-primary mb-3"></i>
+              <h5>Informations Pratiques</h5>
+              <p class="small">Visa, logement, admission, documents requis</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Liste de Tâches Card -->
+        <!-- Ordre de Mission Card -->
+<div class="col-md-4 mb-3">
+  <div class="card h-100 cursor-pointer" (click)="navigateTo('ordre-mission')">
+    <div class="card-body text-center">
+      <i class="fas fa-file-alt fa-3x text-success mb-3"></i>
+      <h5>Ordre de Mission</h5>
+      <p class="small">Document officiel pour demande de visa</p>
+    </div>
+  </div>
+</div>
+
+        <!-- Forums Card -->
+        <div class="col-md-4 mb-3">
+          <div class="card h-100 cursor-pointer" >
+            <div class="card-body text-center">
+              <i class="fas fa-comments fa-3x text-info mb-3"></i>
+              <h5>Forums & Discussions</h5>
+              <p class="small">Échangez avec autres étudiants</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailed Information -->
+      <div class="mt-4">
+        <h5>Ce que vous trouverez dans chaque section :</h5>
+        
+        <div class="accordion mt-3" id="preparationAccordion">
+          <!-- Informations Pratiques Details -->
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInfo">
+                📋 Informations Pratiques
+              </button>
+            </h2>
+            <div id="collapseInfo" class="accordion-collapse collapse show">
+              <div class="accordion-body">
+                <ul>
+                  <li><strong>Procédures Visa :</strong> Documents requis, délais, coûts</li>
+                  <li><strong>Hébergement :</strong> Options de logement, résidences universitaires</li>
+                  <li><strong>Admission :</strong> Processus d'inscription à l'université d'accueil</li>
+                  <li><strong>Santé & Assurance :</strong> Couverture médicale obligatoire</li>
+                  <li><strong>Transport :</strong> Options de voyage, cartes de transport</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ordre de Mission Details -->
+<div class="accordion-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMission">
+      📄 Ordre de Mission
+    </button>
+  </h2>
+  <div id="collapseMission" class="accordion-collapse collapse">
+    <div class="accordion-body">
+      <ul>
+        <li><strong>Document officiel</strong> délivré par l'administration</li>
+        <li><strong>Nécessaire pour la demande de visa</strong> auprès de l'ambassade</li>
+        <li>Contient les informations officielles de votre mobilité</li>
+        <li>Valide votre statut d'étudiant en échange</li>
+        <li>Inclut les dates et destination précises</li>
+        <li>Doit être présenté avec les autres documents de visa</li>
+      </ul>
+      <div class="alert alert-info mt-2">
+        <i class="fas fa-info-circle me-2"></i>
+        L'ordre de mission sera généré et mis à disposition par l'administration une fois votre dossier complet.
+      </div>
+    </div>
+  </div>
+</div>
+
+          <!-- Forums Details -->
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseForum">
+                💬 Forums & Discussions
+              </button>
+            </h2>
+            <div id="collapseForum" class="accordion-collapse collapse">
+              <div class="accordion-body">
+                <ul>
+                  <li>Discussions par destination</li>
+                  <li>Conseils d'anciens étudiants</li>
+                  <li>Questions-réponses en direct</li>
+                  <li>Partage d'expériences</li>
+                  <li>Groupes par université partenaire</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-info mt-4">
+        <i class="fas fa-lightbulb me-2"></i>
+        <strong>Conseil :</strong> Commencez par consulter les informations pratiques spécifiques à votre pays de destination, puis suivez la checklist dans l'ordre chronologique.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Pendant la Mobilite Content -->
+<div class="student-widget lesson-introduction" *ngIf="activeSection === 'pendantMobilite'">
+  <div class="lesson-widget-group">
+    <h4 class="tittle">Pendant la mobilité</h4>
+    <div class="blog-content blog-read">
+      
+      <!-- Congratulations Message -->
+      <div class="alert alert-success">
+        <i class="fas fa-check-circle me-2"></i>
+        <strong>Félicitations !</strong> Votre mobilité est en cours. Esprit continue de vous accompagner pendant cette expérience.
+      </div>
+
+      <p>
+        Cette phase cruciale de votre mobilité internationale vous permet de rester en contact avec Esprit et de gérer 
+        les aspects importants de votre séjour à l'étranger. Elle comprend trois sections essentielles :
+      </p>
+      
+      <div class="row mt-4">
+        <!-- Feedback Card -->
+        <div class="col-md-4 mb-3">
+          <div class="card h-100 cursor-pointer" (click)="navigateTo('feedback-mobilite')">
+            <div class="card-body text-center">
+              <i class="fas fa-star fa-3x text-warning mb-3"></i>
+              <h5>Feedback & Évaluation</h5>
+              <p class="small">Partagez votre expérience et évaluez votre mobilité</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reclamations Card -->
+        <div class="col-md-4 mb-3">
+          <div class="card h-100 cursor-pointer" (click)="navigateTo('reclamations')">
+            <div class="card-body text-center">
+              <i class="fas fa-exclamation-circle fa-3x text-danger mb-3"></i>
+              <h5>Espace Réclamations</h5>
+              <p class="small">Signalez tout problème rencontré pendant votre mobilité</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Equivalences Card -->
+        <div class="col-md-4 mb-3">
+          <div class="card h-100 cursor-pointer" (click)="navigateTo('equivalences')">
+            <div class="card-body text-center">
+              <i class="fas fa-exchange-alt fa-3x text-info mb-3"></i>
+              <h5>Gestion des Équivalences</h5>
+              <p class="small">Choisissez où passer vos examens et gérez les équivalences</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailed Information -->
+      <div class="mt-4">
+        <h5>Ce que vous trouverez dans chaque section :</h5>
+        
+        <div class="accordion mt-3" id="pendantAccordion">
+          <!-- Feedback Details -->
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFeedback">
+                ⭐ Feedback & Évaluation
+              </button>
+            </h2>
+            <div id="collapseFeedback" class="accordion-collapse collapse show">
+              <div class="accordion-body">
+                <ul>
+                  <li><strong>Évaluation de l'expérience :</strong> Notez différents aspects de votre mobilité</li>
+                  <li><strong>Qualité des cours :</strong> Évaluez le contenu et l'enseignement</li>
+                  <li><strong>Infrastructure académique :</strong> Bibliothèque, laboratoires, équipements</li>
+                  <li><strong>Vie sur le campus :</strong> Activités, intégration, vie étudiante</li>
+                  <li><strong>Adaptation culturelle :</strong> Partagez votre expérience d'intégration</li>
+                  <li><strong>Feedback anonyme :</strong> Donnez votre avis en toute confidentialité</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reclamations Details -->
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReclamation">
+                ⚠️ Espace Réclamations
+              </button>
+            </h2>
+            <div id="collapseReclamation" class="accordion-collapse collapse">
+              <div class="accordion-body">
+                <ul>
+                  <li><strong>Problèmes académiques :</strong> Difficultés avec les cours ou professeurs</li>
+                  <li><strong>Problèmes administratifs :</strong> Issues avec l'université d'accueil</li>
+                  <li><strong>Problèmes de logement :</strong> Difficultés avec votre hébergement</li>
+                  <li><strong>Problèmes personnels :</strong> Situations nécessitant un soutien</li>
+                  <li><strong>Réponse rapide :</strong> L'administration Esprit vous répond sous 48h</li>
+                  <li><strong>Suivi en temps réel :</strong> Trackez l'état de votre réclamation</li>
+                </ul>
+                <div class="alert alert-info mt-2">
+                  <i class="fas fa-info-circle me-2"></i>
+                  Notre équipe est là pour vous aider à résoudre tout problème rencontré pendant votre mobilité.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Equivalences Details -->
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEquivalence">
+                📚 Gestion des Équivalences
+              </button>
+            </h2>
+            <div id="collapseEquivalence" class="accordion-collapse collapse">
+              <div class="accordion-body">
+                <ul>
+                  <li><strong>Choix du lieu d'examen :</strong> Passez vos examens à Esprit ou sur place</li>
+                  <li><strong>Équivalences partielles :</strong> Certains cours à Esprit, d'autres sur place</li>
+                  <li><strong>Grille de correspondance :</strong> Visualisez l'équivalence entre les matières</li>
+                  <li><strong>Validation anticipée :</strong> Obtenez l'accord pour vos équivalences</li>
+                  <li><strong>Coordination :</strong> Esprit contacte l'université partenaire pour vous</li>
+                  <li><strong>Délais :</strong> Prise en charge rapide de vos demandes</li>
+                </ul>
+                <div class="alert alert-warning mt-2">
+                  <i class="fas fa-exclamation-triangle me-2"></i>
+                  <strong>Important :</strong> Les choix d'équivalence doivent être validés par les deux établissements.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-primary mt-4">
+        <i class="fas fa-hands-helping me-2"></i>
+        <strong>Accompagnement continu :</strong> Même à distance, Esprit reste votre point de contact principal 
+        pour toute question, problème ou décision académique pendant votre mobilité.
+      </div>
+
+      <div class="alert alert-light mt-3 border">
+        <i class="fas fa-clock me-2"></i>
+        <strong>Disponibilité :</strong> Notre équipe administrative est disponible du lundi au vendredi, 
+        de 8h30 à 17h30 (heure tunisienne) pour répondre à vos besoins.
+      </div>
+    </div>
+  </div>
+
+
+
+  
+</div>
+
+<div class="student-widget lesson-introduction" *ngIf="activeSection === 'apresMobilite'">
+  <div class="lesson-widget-group">
+    <h4 class="tittle">Après la mobilité</h4>
+    <div class="blog-content blog-read">
+      
+      <!-- Completion Message -->
+      <div class="alert alert-info">
+        <i class="fas fa-graduation-cap me-2"></i>
+        <strong>Votre mobilité touche à sa fin !</strong> Esprit continue de vous accompagner pour finaliser cette expérience enrichissante.
+      </div>
+
+      <p>
+        Cette phase finale de votre mobilité internationale est cruciale pour valider votre parcours académique 
+        et officialiser les acquis de votre expérience à l'étranger. Elle comprend deux étapes importantes :
+      </p>
+
+      <div class="row mt-4">
+        <!-- Transcripts Upload Card -->
+        <div class="col-md-6 mb-4">
+          <div class="card h-100 border-primary">
+            <div class="card-header bg-primary text-white">
+              <h5 class="mb-0">
+                <i class="fas fa-file-upload me-2"></i>
+                Dépôt des Relevés de Notes
+              </h5>
+            </div>
+            <div class="card-body">
+              <p class="card-text">
+                <strong>Finalisez votre parcours académique</strong> en uploadant vos relevés de notes officiels 
+                de l'université partenaire. Ces documents sont essentiels pour :
+              </p>
+              <ul class="ps-3">
+                <li>La validation des équivalences de cours</li>
+                <li>L'enregistrement définitif de vos notes</li>
+                <li>La transcription dans votre dossier ESPRIT</li>
+                <li>L'obtention des crédits ECTS correspondants</li>
+              </ul>
+              <div class="text-center mt-3">
+                <button class="btn btn-outline-primary" (click)="goTo('student/transcripts')">
+                  <i class="fas fa-upload me-2"></i>Déposer mes relevés
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Extension Request Card -->
+        <div class="col-md-6 mb-4">
+          <div class="card h-100 border-warning">
+            <div class="card-header bg-warning text-dark">
+              <h5 class="mb-0">
+                <i class="fas fa-calendar-plus me-2"></i>
+                Demande d'Extension
+              </h5>
+            </div>
+            <div class="card-body">
+              <p class="card-text">
+                <strong>Souhaitez-vous prolonger votre expérience ?</strong> Si vous désirez étendre votre mobilité 
+                pour diverses raisons, vous pouvez soumettre une demande d'extension pour :
+              </p>
+              <ul class="ps-3">
+                <li>Compléter un semestre supplémentaire</li>
+                <li>Terminer un projet académique en cours</li>
+                <li>Bénéficier d'une opportunité de stage</li>
+                <li>Personnaliser votre parcours international</li>
+              </ul>
+              <div class="text-center mt-3">
+                <button class="btn btn-outline-warning" (click)="goTo('student/extension')">
+                  <i class="fas fa-paper-plane me-2"></i>Demander une extension
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-light mt-4">
+        <h6 class="alert-heading">
+          <i class="fas fa-info-circle me-2 text-primary"></i>
+          Processus de Finalisation
+        </h6>
+        <p class="mb-0">
+          Une fois vos relevés déposés et traités, vous recevrez une confirmation par email. 
+          Le service des relations internationales traitera votre dossier sous 15 jours ouvrés.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+							
+							<!-- /Introduction -->
+						</div>	
+						
+					</div>	
+				</div>
+        <app-chatbot></app-chatbot>
+			</section>
+			<!-- /Course Lesson -->
+
+
+
+
+
+<app-footer></app-footer>

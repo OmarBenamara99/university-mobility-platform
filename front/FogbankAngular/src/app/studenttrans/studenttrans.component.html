@@ -1,0 +1,145 @@
+<app-navbar2></app-navbar2>
+<app-student-header></app-student-header>
+
+<!-- Centered Transcript Upload -->
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-xl-8 col-lg-10">
+      <div class="settings-widget profile-details">
+        <div class="settings-menu p-0">
+          <div class="profile-heading text-center">
+            <h3>Dépôt des Relevés de Notes</h3>
+            <p class="mx-auto" style="max-width: 600px;">
+              Téléchargez vos relevés de notes officiels de l'université partenaire pour finaliser votre mobilité.
+            </p>
+          </div>
+          
+          <!-- Loading State -->
+          <div *ngIf="loading" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Chargement...</span>
+            </div>
+          </div>
+
+          <!-- Content when loaded -->
+          <div *ngIf="!loading">
+            
+            <!-- Step 1: Select Offer -->
+            <div class="address-check-widget comman-space">
+              <h4 class="text-center mb-4">1. Sélectionnez votre programme de mobilité</h4>
+              <div class="check-bill-address">
+                <div *ngFor="let offer of acceptedOffers" 
+                     class="edit-new-address wallet-method wallet-radio-blk mb-3">
+                  <label class="radio-inline custom_radio">
+                    <input type="radio" name="offer_choice" 
+                          [value]="offer.id" 
+                          [(ngModel)]="selectedOfferId">
+                    <span class="checkmark"></span> 
+                    <strong>{{offer.titre}}</strong> - {{offer.universite}}
+                    <br>
+                    <small class="text-muted">
+                      {{offer.dateDebut | date:'dd/MM/yyyy'}} - {{offer.dateFin | date:'dd/MM/yyyy'}}
+                    </small>
+                  </label>
+                </div>
+                
+                <div *ngIf="acceptedOffers.length === 0" class="alert alert-info text-center">
+                  Vous n'avez aucun programme de mobilité accepté pour le moment.
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2: File Upload -->
+            <div *ngIf="selectedOfferId" class="comman-space">
+              <h4 class="text-center mb-4">2. Téléchargez votre relevé de notes</h4>
+              
+              <div class="input-block">
+                <label class="add-course-label">Relevé de Notes Officiel (PDF)</label>
+                
+                <div class="file-drop" 
+                    (drop)="onDrop($event)" 
+                    (dragover)="onDragOver($event)" 
+                    (dragleave)="onDragLeave($event)" 
+                    [class.dragover]="isDragOver"
+                    style="border: 2px dashed #ccc; padding: 30px; text-align: center; border-radius: 8px; cursor: pointer;">
+                  <form class="dropzone" (click)="fileInput.click()">
+                    <p>
+                      <i class="fas fa-cloud-upload-alt fa-2x text-muted mb-2"></i><br>
+                      Glissez-déposez votre relevé de notes ici<br>
+                      ou <strong>cliquez pour sélectionner</strong>
+                    </p>
+                    <input 
+                      type="file" 
+                      #fileInput 
+                      (change)="onFileSelected($event)" 
+                      accept=".pdf,application/pdf" 
+                      hidden
+                    />
+                  </form>
+                </div>
+
+                <div class="accept-drag-file mt-2">
+                  <p class="text-muted small">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Formats acceptés: PDF uniquement (max 5MB)
+                  </p>
+                </div>
+
+                <!-- Selected file info -->
+                <div *ngIf="transcriptFile" class="selected-file-info mt-3 p-3 bg-light rounded">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span>
+                      <i class="fas fa-file-pdf text-danger me-2"></i>
+                      {{ transcriptFile.name }}
+                      <small class="text-muted">({{ transcriptFile.size / (1024 * 1024) | number:'1.1-1' }} MB)</small>
+                    </span>
+                    <button class="btn btn-sm btn-outline-danger" (click)="removeFile()">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div *ngIf="selectedOfferId" class="add-new-address grad-border hvr-sweep-to-right mt-4 text-center">
+              <button class="btn btn-primary px-5" 
+                      (click)="onSubmit()"
+                      [disabled]="!canSubmit() || submitting">
+                <span *ngIf="submitting" class="spinner-border spinner-border-sm me-2"></span>
+                {{ submitting ? 'Téléchargement...' : 'Soumettre mon relevé' }}
+              </button>
+            </div>
+
+            <!-- Status Messages -->
+            <div *ngIf="successMessage" class="alert alert-success mt-3 text-center">
+              <i class="fas fa-check-circle me-2"></i>
+              {{ successMessage }}
+            </div>
+            <div *ngIf="errorMessage" class="alert alert-danger mt-3 text-center">
+              <i class="fas fa-exclamation-circle me-2"></i>
+              {{ errorMessage }}
+            </div>
+
+            <!-- Information Box -->
+            <div class="alert alert-info mt-4">
+              <h6 class="alert-heading">
+                <i class="fas fa-info-circle me-2"></i>
+                Informations importantes
+              </h6>
+              <ul class="mb-0 ps-3">
+                <li>Le relevé doit être officiel et émis par l'université partenaire</li>
+                <li>Le fichier doit être en format PDF</li>
+                <li>Taille maximale: 5MB</li>
+                <li>Vérifiez que toutes les notes sont visibles et lisibles</li>
+                <li>Le traitement prendra 5 à 10 jours ouvrables</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

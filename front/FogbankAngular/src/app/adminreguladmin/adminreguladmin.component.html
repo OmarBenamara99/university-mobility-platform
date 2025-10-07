@@ -1,0 +1,209 @@
+<!-- Page Wrapper -->
+<app-navbar3></app-navbar3>
+<div class="page-content">
+  <div class="container">
+    <div class="row">
+
+      <!-- Sidebar -->
+      <div class="col-xl-3 col-lg-4 col-md-12 theiaStickySidebar">
+        <app-sidebar2></app-sidebar2>
+      </div>
+      <!-- /Sidebar -->
+
+
+
+
+
+      <!-- Admin Administrative Files Dashboard -->
+<div class="col-xl-9 col-lg-8 col-md-12">	
+    <div class="tak-instruct-group">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="settings-widget">
+                    <div class="settings-inner-blk p-0">
+                        <div class="sell-course-head comman-space">
+                            <h3>Régularisation Administrative - Revue des dossiers</h3>
+                            <p>Gérez et validez les documents de paiement des étudiants.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="settings-widget">
+                    <div class="settings-inner-blk p-0">
+                        <div class="comman-space pb-0">
+                            <div class="sell-course-head withdraw-history-head border-bottom-0">
+                                <h3>Dossiers Administratifs</h3>
+                            </div>
+                            <div class="instruct-search-blk mb-0">
+                                <form action="#">
+                                    <div class="row gx-2 align-items-center">	
+                                        <div class="col-md-6 col-lg-3 col-item">
+                                            <div class="input-block select-form mb-0">
+                                                <select class="form-select select" [(ngModel)]="statusFilter" [ngModelOptions]="{standalone: true}">
+                                                    <option value="">Tous les statuts</option>
+                                                    <option value="PENDING_PAYMENT_CHOICE">En attente choix</option>
+                                                    <option value="PENDING_UPLOAD">Documents attendus</option>
+                                                    <option value="UNDER_REVIEW">En revue</option>
+                                                    <option value="COMPLETED">Complété</option>
+                                                    <option value="CANCELLED">Annulé</option>
+                                                </select>
+                                            </div>
+                                        </div>	
+                                        <div class="col-md-6 col-lg-3 col-item">
+                                            <div class="input-block select-form mb-0">
+                                                <select class="form-select select" [(ngModel)]="paymentMethodFilter" [ngModelOptions]="{standalone: true}">
+                                                    <option value="">Tous les types</option>
+                                                    <option value="IMMEDIATE_FULL_PAYMENT">Paiement immédiat</option>
+                                                    <option value="PAYMENT_BY_CHEQUES">Paiement par chèques</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-lg-4 col-item">
+                                            <div class="input-block mb-0">
+                                                <input type="text" class="form-control" placeholder="Rechercher étudiant..." 
+                                                       [(ngModel)]="searchTerm" [ngModelOptions]="{standalone: true}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-lg-2 col-item">
+                                            <div class="download-widra">
+                                                <button class="btn btn-primary" (click)="applyFilters()">
+                                                    <i class="feather-filter"></i> Filtrer
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="comman-space pb-0">
+                            <div class="settings-referral-blk course-instruct-blk table-responsive">
+
+                                <!-- Administrative Files Table -->
+                                <table class="table table-nowrap mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <div class="form-check instruct-check-list">
+                                                    <input class="form-check-input" type="checkbox" (change)="selectAll($event)">
+                                                </div>
+                                            </th>
+                                            
+                                            <th>Méthode Paiement</th>
+                                            <th>Documents</th>
+                                            <th>Statut</th>
+                                            <th>Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let file of filteredFiles">
+                                            <td>
+                                                <div class="form-check instruct-check-list">
+                                                    <input class="form-check-input" type="checkbox" 
+                                                           [checked]="isSelected(file.id!)" (change)="toggleSelection(file.id!)">
+                                                </div>
+                                            </td>
+                                            
+                                            <td>
+                                                <span class="badge" [ngClass]="{
+                                                    'bg-info': file.paymentMethod === 'IMMEDIATE_FULL_PAYMENT',
+                                                    'bg-warning': file.paymentMethod === 'PAYMENT_BY_CHEQUES'
+                                                }">
+                                                    {{ file.paymentMethod === 'IMMEDIATE_FULL_PAYMENT' ? 'Immédiat' : 'Chèques' }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <!-- Download buttons for documents -->
+                                                <div class="btn-group">
+                                                    <button *ngIf="file.paymentReceiptFilename" class="btn btn-sm btn-outline-primary"
+                                                            (click)="downloadFile(file.id!, 'receipt')" title="Télécharger reçu">
+                                                        <i class="feather-download"></i> Reçu
+                                                    </button>
+                                                    <button *ngIf="file.chequesFilename" class="btn btn-sm btn-outline-secondary"
+                                                            (click)="downloadFile(file.id!, 'cheques')" title="Télécharger chèques">
+                                                        <i class="feather-download"></i> Chèques
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="badge" [ngClass]="{
+                                                    'bg-warning': file.status === 'PENDING_PAYMENT_CHOICE',
+                                                    'bg-info': file.status === 'PENDING_UPLOAD',
+                                                    'bg-primary': file.status === 'UNDER_REVIEW',
+                                                    'bg-success': file.status === 'COMPLETED',
+                                                    'bg-danger': file.status === 'CANCELLED'
+                                                }">
+                                                    {{ getStatusText(file.status) }}
+                                                </span>
+                                            </td>
+                                            <td>{{file.lastUpdated | date:'dd/MM/yy'}}</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <!-- Status change dropdown -->
+                                                    <select class="form-select form-select-sm" 
+        [value]="file.status"
+        (change)="onStatusChange(file.id!, $event)">
+                                                        <option value="PENDING_PAYMENT_CHOICE">En attente choix</option>
+                                                        <option value="PENDING_UPLOAD">Documents attendus</option>
+                                                        <option value="UNDER_REVIEW">En revue</option>
+                                                        <option value="COMPLETED">Complété</option>
+                                                        <option value="CANCELLED">Annulé</option>
+                                                    </select>
+                                                    
+                                                    <!-- View details button -->
+                                                    <button class="btn btn-sm btn-outline-info" (click)="viewDetails(file)">
+                                                        <i class="feather-eye"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <!-- /Administrative Files Table -->	
+
+                            </div>									
+                        </div>
+                        
+                        <!-- Bulk Actions -->
+                        <div class="comman-space border-top" *ngIf="selectedFiles.length > 0">
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <p class="mb-0">{{selectedFiles.length}} fichier(s) sélectionné(s)</p>
+                                </div>
+                                <div class="col-md-6 text-end">
+                                    <div class="btn-group">
+                                        <select class="form-select form-select-sm me-2" style="width: auto;" 
+                                                [(ngModel)]="bulkActionStatus">
+                                            <option value="COMPLETED">Marquer comme complété</option>
+                                            <option value="CANCELLED">Marquer comme annulé</option>
+                                            <option value="UNDER_REVIEW">Remettre en revue</option>
+                                        </select>
+                                        <button class="btn btn-primary btn-sm" (click)="applyBulkAction()">
+                                            Appliquer
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>	
+<!-- /Admin Administrative Files Dashboard -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<app-footer></app-footer>

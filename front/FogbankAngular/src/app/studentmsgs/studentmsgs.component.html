@@ -1,0 +1,125 @@
+<app-navbar2></app-navbar2>
+<app-student-header></app-student-header>
+
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-12 col-lg-10 offset-md-2 offset-lg-3">
+      
+      <!-- Chat Right - Updated with new template -->
+      <div class="chat-cont-right card">
+        
+        <!-- Chat Header -->
+        <div class="chat-header card-header bg-primary text-white text-center">
+          <div class="media d-flex align-items-center justify-content-center">
+            <div class="media-img-wrap flex-shrink-0 me-3">
+              <div class="avatar avatar-online">
+                <div class="avatar-sm bg-light rounded-circle text-dark d-flex align-items-center justify-content-center"
+                     style="width: 40px; height: 40px;">
+                  <i class="fas fa-users"></i>
+                </div>
+              </div>
+            </div>
+            <div class="media-body flex-grow-1">
+  <div class="user-name h5 mb-0">Discussion: {{ userOffer?.titre }}</div>
+  <div class="user-status">{{ userOffer?.universite }} - {{ userOffer?.type }}</div>
+</div>
+          </div>
+        </div>
+        
+        <!-- Chat Body -->
+        <div class="chat-body card-body" style="height: 500px; overflow-y: auto;">
+          
+          <!-- Loading state -->
+          <div *ngIf="messages.length === 0" class="text-center text-muted mt-5">
+            <div class="spinner-border spinner-border-sm" role="status"></div>
+            <p class="mt-2">Chargement des messages...</p>
+          </div>
+
+          <!-- No messages state -->
+          <div *ngIf="messages.length === 0" class="text-center text-muted mt-5">
+            <p>Aucun message pour le moment</p>
+            <p>Soyez le premier à envoyer un message !</p>
+          </div>
+
+          <!-- Messages list -->
+          <div class="chat-scroll">
+            <ul class="list-unstyled">
+              <li *ngFor="let msg of messages" 
+                  [class.media]="true" 
+                  [class.received]="msg.sender?.id !== currentUser?.id"
+                  [class.sent]="msg.sender?.id === currentUser?.id"
+                  class="d-flex mb-3">
+                
+                <div class="media-body flex-grow-1">
+                  <div class="msg-box">
+                    <!-- Avatar for received messages -->
+                    <div *ngIf="msg.sender?.id !== currentUser?.id" class="flex-shrink-0 me-2" style="float: left;">
+                      <div class="avatar-sm bg-secondary rounded-circle text-white d-flex align-items-center justify-content-center"
+                           style="width: 35px; height: 35px; font-size: 14px;">
+                        {{(msg.sender?.firstname?.charAt(0) + msg.sender?.lastname?.charAt(0)) || 'U'}}
+                      </div>
+                    </div>
+                    
+                    <div class="msg-bg" 
+                         [class.bg-light]="msg.sender?.id !== currentUser?.id"
+                         [class.bg-primary]="msg.sender?.id === currentUser?.id"
+                         [class.text-white]="msg.sender?.id === currentUser?.id"
+                         style="border-radius: 18px; padding: 10px 15px; display: inline-block; max-width: 70%;">
+                      <p class="mb-0">{{msg.content}}</p>
+                    </div>
+                    
+                    <ul class="chat-msg-info mt-1">
+                      <li>
+                        <div class="chat-time small text-muted">
+                          <span>{{msg.timestamp | date:'short'}}</span>
+                          <span *ngIf="msg.sender?.id !== currentUser?.id" class="ms-2">
+                            par {{msg.sender?.firstname}} {{msg.sender?.lastname}}
+                          </span>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Chat Footer -->
+        <div class="chat-footer card-footer">
+          <div class="input-group">
+            <!-- Upload button (hidden for now) -->
+            <div class="btn-file btn me-2" >
+              <i class="fa fa-paperclip"></i>
+              <input type="file">
+            </div>
+            
+            <input type="text" 
+                   class="form-control input-msg-send" 
+                   placeholder="Tapez votre message ici..." 
+                   [(ngModel)]="newMessageContent" 
+                   (keyup.enter)="sendMessage()"
+                   [disabled]="!currentUser">
+            
+            <button type="button" 
+                    class="btn btn-primary msg-send-btn rounded-pill ms-2"
+                    (click)="sendMessage()"
+                    [disabled]="!newMessageContent.trim() || !currentUser">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+          
+          <!-- User info -->
+          <div class="mt-2 small text-muted" *ngIf="currentUser">
+            Connecté en tant que: {{ currentUser.firstname }} {{ currentUser.lastname }}
+          </div>
+        </div>
+
+      </div>
+      <!-- /Chat Right -->
+
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

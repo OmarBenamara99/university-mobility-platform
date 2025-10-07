@@ -1,0 +1,251 @@
+<!-- Page Wrapper -->
+<app-navbar3></app-navbar3>
+<div class="page-content">
+  <div class="container">
+    <div class="row">
+
+      <!-- Sidebar -->
+      <div class="col-xl-3 col-lg-4 col-md-12 theiaStickySidebar">
+        <app-sidebar2></app-sidebar2>
+      </div>
+      <!-- /Sidebar -->
+
+      <!-- Contenu principal -->
+<div class="col-xl-9 col-lg-8 col-md-12">
+  <div class="card">
+
+
+
+    <div *ngIf="modeFormulaire === 'affichage'" class="settings-widget">
+  <div class="settings-inner-blk p-0">
+    <div class="comman-space pb-0">
+      
+      <div class="filter-grp user-referred table-select-blk d-flex align-items-center justify-content-between">
+            <h3>Liste des candidatures par opportunité</h3>
+          </div>
+
+      <div *ngFor="let offre of offres">
+        <div class="add-course-inner-header ps-0 d-flex align-items-center justify-content-between">
+  <h4>{{ offre.titre }} – {{ offre.universite }}</h4>
+  <div class="go-dashboard text-center">
+    <button class="btn btn-primary btn-sm" (click)="calculerScores(offre)">
+      <i class="fas fa-calculator"></i> Calculer les scores
+    </button>
+  </div>
+</div>
+        <div class="settings-referral-blk table-responsive">
+          <table class="table table-nowrap mb-0">
+            <thead>
+              <tr>
+                <th>ID Esprit</th>
+                <th>Nom & Prénom</th>
+                <th>Date de dépôt</th>
+                <th>Score</th>
+                <th>Statut</th>
+                <th class="text-end">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let c of offre.candidatures">
+                <td>{{ c.idEsprit }}</td>
+                <td>{{ c.nom }} {{ c.prenom }}</td>
+                <td>{{ c.dateDepot }}</td>
+                <td>{{ c.score ? (c.score | number:'1.2-2') : 'Non calculé' }}</td>
+                <td>
+                  <span 
+                    class="badge"
+                    [ngClass]="{
+                      'bg-secondary text-white': c.statut === 'EN_ATTENTE',
+                      'bg-success text-white': c.statut === 'ACCEPTEE',
+                      'bg-danger text-white': c.statut === 'REFUSEE'
+                    }"
+                    style="font-size: 0.9rem; padding: 5px 10px;">
+                    {{ c.statut }}
+                  </span>
+                </td>
+                <td class="text-end">
+                  <ul class="grp-action-style inline-inline">
+                    <li class="list-inline-item">
+                      <a href="javascript:void(0);" class="btn btn-action-style btn-action-dark"
+   (click)="ouvrirModificationCandidature(c)">
+  <i class="fa-regular fa-pen-to-square"></i>
+</a>
+                    </li>
+                    <li class="list-inline-item">
+                      <a href="javascript:void(0);" class="btn btn-action-style btn-action-delete" (click)="supprimerCandidature(c.id!)">
+                        <i class="fa-regular fa-trash-can"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+<div *ngIf="modeFormulaire === 'modification'" class="settings-widget">
+  <div *ngIf="selectedCandidature" class="settings-inner-blk p-0">
+    <div class="comman-space">
+      <div class="filter-grp d-flex align-items-center justify-content-between mb-3">
+        <h3>Modifier une candidature</h3>
+        <div class="go-dashboard text-center">
+          <button class="btn btn-primary" (click)="annuler()">Retour</button>
+        </div>
+      </div>
+
+      <!-- Identité -->
+      <div class="input-block">
+        <label class="form-label">Nom</label>
+        <input type="text" class="form-control" [(ngModel)]="selectedCandidature.nom" name="nom">
+      </div>
+
+      <div class="input-block">
+        <label class="form-label">Prénom</label>
+        <input type="text" class="form-control" [(ngModel)]="selectedCandidature.prenom" name="prenom">
+      </div>
+
+      <div class="input-block">
+        <label class="form-label">ID Esprit</label>
+        <input type="text" class="form-control" [(ngModel)]="selectedCandidature.idEsprit" name="idEsprit">
+      </div>
+
+      <div class="input-block">
+        <label class="form-label">Téléphone</label>
+        <input type="text" class="form-control" [(ngModel)]="selectedCandidature.phone" name="phone">
+      </div>
+
+      <div class="input-block">
+        <label class="form-label">Email principal</label>
+        <input type="email" class="form-control" [(ngModel)]="selectedCandidature.email" name="email">
+      </div>
+
+      <div class="input-block">
+        <label class="form-label">Email Esprit</label>
+        <input type="email" class="form-control" [(ngModel)]="selectedCandidature.emailesprit" name="emailesprit">
+      </div>
+
+      <div class="input-block">
+        <label class="form-label">Email personnel</label>
+        <input type="email" class="form-control" [(ngModel)]="selectedCandidature.emailpersonel" name="emailpersonel">
+      </div>
+
+      <!-- Fichiers -->
+      <div class="input-block">
+        <label class="form-label">Lien CV</label>
+        <input type="text" class="form-control" [(ngModel)]="selectedCandidature.CV" name="CV">
+      </div>
+
+      <div class="input-block">
+        <label class="form-label">Lien Lettre de motivation</label>
+        <input type="text" class="form-control" [(ngModel)]="selectedCandidature.lettreMotivation" name="lettreMotivation">
+      </div>
+
+      <div class="input-block">
+        <label class="form-label">Lien autres documents (certificats, diplômes...)</label>
+        <input type="text" class="form-control" [(ngModel)]="selectedCandidature.autreDocs" name="autreDocs">
+      </div>
+
+      <!-- Études -->
+      <div class="input-block">
+        <label class="form-label">Année actuelle</label>
+        <select class="form-select" [(ngModel)]="selectedCandidature.anneeActuelle" name="anneeActuelle">
+          <option *ngFor="let a of anneeEtudeValues" [value]="a">{{ a }}</option>
+        </select>
+      </div>
+
+      <div class="input-block">
+        <label class="form-label">Option actuelle</label>
+        <select class="form-select" [(ngModel)]="selectedCandidature.optionActuelle" name="optionActuelle">
+          <option *ngFor="let o of optionEtudeValues" [value]="o">{{ o }}</option>
+        </select>
+      </div>
+
+      <div class="input-block">
+        <label class="form-label">Niveau de langue</label>
+        <select class="form-select" [(ngModel)]="selectedCandidature.niveauLangue" name="niveauLangue">
+          <option *ngFor="let n of langueStatusValues" [value]="n">{{ n }}</option>
+        </select>
+      </div>
+
+      <div class="input-block">
+        <label class="form-label">Crédits non validés</label>
+        <div class="form-check form-switch check-on d-flex align-items-center gap-2">
+          <input type="checkbox" class="form-check-input" [(ngModel)]="selectedCandidature.creditsNonValides" name="creditsNonValides" id="creditSwitch">
+          <label class="form-check-label" for="creditSwitch" style="margin-left: 10px;">
+            {{ selectedCandidature.creditsNonValides ? 'Oui' : 'Non' }}
+          </label>
+        </div>
+      </div>
+
+      <!-- Moyennes -->
+      <div class="row">
+  <div class="col-md-4">
+    <div class="input-block">
+      <label class="form-label">Moyenne 1ère année</label>
+      <input type="number" class="form-control" [(ngModel)]="selectedCandidature.moyenne1A">
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="input-block">
+      <label class="form-label">Moyenne 2ème année</label>
+      <input type="number" class="form-control" [(ngModel)]="selectedCandidature.moyenne2A">
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="input-block">
+      <label class="form-label">Moyenne 3ème année</label>
+      <input type="number" class="form-control" [(ngModel)]="selectedCandidature.moyenne3A">
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="input-block">
+      <label class="form-label">Moyenne 4ème année</label>
+      <input type="number" class="form-control" [(ngModel)]="selectedCandidature.moyenne4A">
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="input-block">
+      <label class="form-label">Moyenne 5ème année</label>
+      <input type="number" class="form-control" [(ngModel)]="selectedCandidature.moyenne5A">
+    </div>
+  </div>
+</div>
+
+
+      <!-- Statut -->
+      <div class="input-block">
+        <label class="form-label">Statut de la candidature</label>
+        <select class="form-select" [(ngModel)]="selectedCandidature.statut" name="statut">
+          <option value="EN_ATTENTE">En attente</option>
+          <option value="ACCEPTEE">Acceptée</option>
+          <option value="REFUSEE">Refusée</option>
+        </select>
+      </div>
+
+      <div class="submit-ticket">
+        <button class="btn btn-primary" (click)="updateCandidature()">Mettre à jour</button>
+        <button class="btn btn-dark" (click)="annuler()">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+    </div>
+</div>
+<app-footer></app-footer>
