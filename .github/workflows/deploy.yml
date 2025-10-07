@@ -68,7 +68,7 @@ jobs:
       run: |
         echo "🏗️ Building Frontend..."
         cd front/FogbankAngular
-        npm install
+        npm install --legacy-peer-deps
         npm run build --configuration=development --optimization=false
         echo "✅ Frontend built successfully!"
         
