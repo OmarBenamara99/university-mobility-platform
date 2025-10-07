@@ -55,6 +55,21 @@ jobs:
           echo "❌ Docker Compose file missing!"
           exit 1
         fi
+
+    - name: Build Backend
+      run: |
+        echo "🏗️ Building Backend..."
+        cd back/FogbankSpringBootPi
+        ./mvnw clean compile -q
+        echo "✅ Backend compiled successfully!"
+        
+    - name: Build Frontend
+      run: |
+        echo "🏗️ Building Frontend..."
+        cd front/FogbankAngular
+        npm install --silent
+        npm run build --configuration=development --optimization=false
+        echo "✅ Frontend built successfully!"
         
     - name: Success
-      run: echo "🎉 All validations passed! Project structure is perfect for deployment."
+      run: echo "🎉 All validations passed! Project compiles and is ready for deployment."
