@@ -9,12 +9,12 @@ import { OrdreMission } from '../models/OrdreMission';
 })
 export class OffreService {
 
-  private addUrl  = 'http://localhost:8087/api/v1/admin/addOffre';
-  private updateUrl  = 'http://localhost:8087/api/v1/admin/updateOffre';
-  private deleteUrl  = 'http://localhost:8087/api/v1/admin/deleteOffre';
-  private showUrl  = 'http://localhost:8087/api/v1/admin/offres';
-  private offresWithCandidaturesUrl = 'http://localhost:8087/api/v1/admin/with-candidatures';
-  private apiUrl = 'http://localhost:8087/api/v1/admin';
+  private addUrl  = 'https://university-mobility-platform.onrender.com/api/v1/admin/addOffre';
+  private updateUrl  = 'https://university-mobility-platform.onrender.com/api/v1/admin/updateOffre';
+  private deleteUrl  = 'https://university-mobility-platform.onrender.com/api/v1/admin/deleteOffre';
+  private showUrl  = 'https://university-mobility-platform.onrender.com/api/v1/admin/offres';
+  private offresWithCandidaturesUrl = 'https://university-mobility-platform.onrender.com/api/v1/admin/with-candidatures';
+  private apiUrl = 'https://university-mobility-platform.onrender.com/api/v1/admin';
 
   constructor(private http: HttpClient) { }
 

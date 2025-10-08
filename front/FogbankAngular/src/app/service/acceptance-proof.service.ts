@@ -9,7 +9,7 @@ import { ProofStatus } from '../models/proof-status.enum';
 })
 export class AcceptanceProofService {
 
-  private apiUrl = 'http://localhost:8087/api/v1/admin';
+  private apiUrl = 'https://university-mobility-platform.onrender.com/api/v1/admin';
 
   constructor(private http: HttpClient) { }
 

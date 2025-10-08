@@ -9,7 +9,7 @@ import { ExtensionStatus } from '../models/extension-status.enum';
 })
 export class ExtensionRequestService {
 
-  private apiUrl = 'http://localhost:8087/api/v1/admin/extension-requests';
+  private apiUrl = 'https://university-mobility-platform.onrender.com/api/v1/admin/extension-requests';
 
   constructor(private http: HttpClient) { }
 

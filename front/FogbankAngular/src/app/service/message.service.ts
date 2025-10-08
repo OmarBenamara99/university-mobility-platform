@@ -7,7 +7,7 @@ import { Message } from '../models/message';
   providedIn: 'root'
 })
 export class MessageService {
-   private apiUrl = 'http://localhost:8087/api/v1/admin';
+   private apiUrl = 'https://university-mobility-platform.onrender.com/api/v1/admin';
 
   constructor(private http: HttpClient) { }
 

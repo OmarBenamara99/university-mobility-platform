@@ -10,12 +10,12 @@ import { ScoreUpdateDto } from '../models/ScoreUpdateDto';
 })
 export class CandidatureService {
 
-  private addUrl  = 'http://localhost:8087/api/v1/admin/addCandidature';
-  private updateUrl  = 'http://localhost:8087/api/v1/admin/updateCandidature';
-  private deleteUrl  = 'http://localhost:8087/api/v1/admin/deleteCandidature';
-  private showUrl  = 'http://localhost:8087/api/v1/admin/candidatures';
-  private scoresUrl = 'http://localhost:8087/api/v1/admin/update-scores';
-  private apiUrl = 'http://localhost:8087/api/v1/admin';
+  private addUrl  = 'https://university-mobility-platform.onrender.com/api/v1/admin/addCandidature';
+  private updateUrl  = 'https://university-mobility-platform.onrender.com/api/v1/admin/updateCandidature';
+  private deleteUrl  = 'https://university-mobility-platform.onrender.com/api/v1/admin/deleteCandidature';
+  private showUrl  = 'https://university-mobility-platform.onrender.com/api/v1/admin/candidatures';
+  private scoresUrl = 'https://university-mobility-platform.onrender.com/api/v1/admin/update-scores';
+  private apiUrl = 'https://university-mobility-platform.onrender.com/api/v1/admin';
 
   constructor(private http: HttpClient) { }
 
@@ -37,7 +37,7 @@ export class CandidatureService {
     }
 
     getCandidaturesByUserId(userId: number): Observable<Candidature[]> {
-  return this.http.get<Candidature[]>(`http://localhost:8087/api/v1/admin/user/${userId}/candidatures`);
+  return this.http.get<Candidature[]>(`https://university-mobility-platform.onrender.com/api/v1/admin/user/${userId}/candidatures`);
 }
 
 uploadFiles(
@@ -52,7 +52,7 @@ uploadFiles(
   if (autreDocsFile) formData.append('autreDocs', autreDocsFile);
 
   return this.http.post<void>(
-    `http://localhost:8087/api/v1/admin/${candidatureId}/files`,
+    `https://university-mobility-platform.onrender.com/api/v1/admin/${candidatureId}/files`,
     formData
   );
 }
@@ -75,7 +75,7 @@ updateScores(updates: ScoreUpdateDto[]): Observable<void> {
 // New method for "Non" choice (delete all)
   deleteAllUserCandidatures(userId: number): Observable<void> {
     return this.http.delete<void>(
-      `http://localhost:8087/api/v1/admin/${userId}/all`
+      `https://university-mobility-platform.onrender.com/api/v1/admin/${userId}/all`
     ).pipe(
       catchError(err => {
         console.error('Error deleting all candidatures:', err);
@@ -87,7 +87,7 @@ updateScores(updates: ScoreUpdateDto[]): Observable<void> {
   // New method for "Oui" choice (keep one)
   confirmSingleCandidature(userId: number, candidatureId: number): Observable<void> {
     return this.http.post<void>(
-      `http://localhost:8087/api/v1/admin/${userId}/confirm/${candidatureId}`,
+      `https://university-mobility-platform.onrender.com/api/v1/admin/${userId}/confirm/${candidatureId}`,
       null  // No request body needed
     ).pipe(
       catchError(err => {

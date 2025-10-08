@@ -12,8 +12,8 @@ import {TokenStorageService} from "./token-storage.service";
 export class AuthServiceService {
 
   private baseUrl = 'https://university-mobility-platform.onrender.com/api/v1/auth';
-  private baseUrluser = 'http://localhost:8087/api/v1/user';
-  private base = 'http://localhost:8087';
+  private baseUrluser = 'https://university-mobility-platform.onrender.com/api/v1/user';
+  private base = 'https://university-mobility-platform.onrender.com';
   constructor(private http: HttpClient, private tokenStorageService: TokenStorageService) { }
 
   signup(signUpRequest: any): Observable<User> {

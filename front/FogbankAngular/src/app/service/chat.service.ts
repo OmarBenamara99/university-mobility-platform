@@ -8,7 +8,7 @@ import { KnowledgeBaseService } from './knowledge-base.service';
 })
 export class ChatService {
 
-  private apiUrl = 'http://localhost:8087/api/gemini/ask'; // Your Spring Boot endpoint
+  private apiUrl = 'https://university-mobility-platform.onrender.com/api/gemini/ask'; // Your Spring Boot endpoint
 
   constructor(private http: HttpClient, private knowledgeBaseService: KnowledgeBaseService) { }
 

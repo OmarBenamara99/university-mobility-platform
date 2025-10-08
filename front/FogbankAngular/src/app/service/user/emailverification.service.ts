@@ -8,7 +8,7 @@ import {Observable} from "rxjs";
 export class EmailverificationService {
 
 
-  private apiUrl = ' http://localhost:8087/forgetpassword/verifyMail/';
+  private apiUrl = ' https://university-mobility-platform.onrender.com/forgetpassword/verifyMail/';
 
 
   constructor(private http: HttpClient) {}

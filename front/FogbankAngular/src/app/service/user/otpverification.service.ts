@@ -8,7 +8,7 @@ import {Observable} from "rxjs";
 export class OtpverificationService {
 
 
-  private baseUrl = 'http://localhost:8087/forgetpassword'; // Replace with your Spring Boot server URL
+  private baseUrl = 'https://university-mobility-platform.onrender.com/forgetpassword'; // Replace with your Spring Boot server URL
 
   constructor(private http: HttpClient) { }
 

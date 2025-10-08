@@ -9,7 +9,7 @@ import { ExamChoice } from '../models/ExamChoice';
 })
 export class EquivalenceService {
 
-  private apiUrl = 'http://localhost:8087/api/v1/admin/equivalence';
+  private apiUrl = 'https://university-mobility-platform.onrender.com/api/v1/admin/equivalence';
 
   constructor(private http: HttpClient) { }
 
